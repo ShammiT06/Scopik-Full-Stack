@@ -357,37 +357,38 @@ function Header() {
   };
 
   const handleLogout = () => {
-    const logout_time = new Date().toLocaleString();
-    const student_email = userEmail;
-    const storedLoginTime = localStorage.getItem("login_time");
+  const logout_time = new Date().toLocaleString();
+  const student_email = userEmail;
+  const storedLoginTime = localStorage.getItem("login_time");
 
-    if (!student_email) {
-      alert("Student email not found.");
-      return;
+  if (!student_email) {
+    alert("Student email not found.");
+    return;
+  }
+
+  setShowConfirm(false);
+  setTimeout(async () => {
+    try {
+      await axios.post(import.meta.env.VITE_LOGOUT, {
+        logout_time,
+        student_email,
+        storedLoginTime,
+      });
+
+      localStorage.clear()
+
+      // Reset context state
+      setUserEmail(null);
+      setUserImage(null);
+      setLogin(false);
+
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed", err);
     }
+  }, 0);
+};
 
-    setShowConfirm(false);
-    setTimeout(async () => {
-      try {
-        await axios.post(import.meta.env.VITE_LOGOUT, {
-          logout_time,
-          student_email,
-          storedLoginTime,
-        });
-
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        localStorage.removeItem("userEmail");
-        localStorage.removeItem("userImage");
-        setUserEmail(null);
-        setUserImage(null);
-        setLogin(false);
-        navigate("/");
-      } catch (err) {
-        console.error("Logout failed", err);
-      }
-    }, 0);
-  };
 
   // Scroll effect
   useEffect(() => {
