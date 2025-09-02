@@ -133,25 +133,29 @@ function Category() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 rounded-lg bg-white pb-10">
+    <div className="max-w-7xl mx-auto px-4 rounded-lg bg-white pb-10 dark:bg-slate-900">
       {/* Header */}
-      <div className="bg-white flex justify-between items-center p-5 rounded-md">
-        <h1 className="text-xl font-bold text-black">Categories</h1>
-        <button
-          onClick={() => {
-            resetForm();
-            setShowForm(true);
-          }}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-        >
-          Add Category
-        </button>
+      <div className="bg-white dark:bg-slate-900 p-5 rounded-md shadow-md">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-orange-400 text-center sm:text-left">
+            Categories
+          </h1>
+          <button
+            onClick={() => {
+              resetForm();
+              setShowForm(true);
+            }}
+            className="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition w-full sm:w-auto"
+          >
+            Add Category
+          </button>
+        </div>
       </div>
 
       {/* Form */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white w-full max-w-4xl p-6 rounded-md shadow-md space-y-4 border border-gray-100 relative">
+          <div className="bg-white w-full max-w-4xl p-6 rounded-md shadow-md space-y-4 border border-gray-100 relative dark:bg-slate-900">
             <button
               className="absolute top-3 right-5 text-gray-500 hover:text-red-600 text-3xl font-bold"
               onClick={resetForm}
@@ -159,23 +163,24 @@ function Category() {
               ×
             </button>
 
-            <div className="flex items-center justify-center gap-5">
-              <label className="w-40 font-medium text-black">
+            {/* Responsive Input */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <label className="w-full sm:w-40 font-medium text-black dark:text-white text-center sm:text-left">
                 Category Name:
               </label>
               <input
                 type="text"
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
-                className="border p-2 w-96 rounded-md focus:outline-blue-400"
+                className="border p-2 w-full sm:w-96 rounded-md focus:outline-blue-400 dark:bg-slate-800 dark:text-white"
               />
             </div>
 
-            <div className="flex items-center justify-center gap-5">
-              <label className="w-40 font-medium text-black">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <label className="w-full sm:w-40 font-medium text-black dark:text-white text-center sm:text-left">
                 Upload Image:
               </label>
-              <label className="w-96 p-3 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer hover:border-blue-400 transition relative">
+              <label className="w-full sm:w-96 p-3 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer hover:border-blue-400 transition relative">
                 <input
                   type="file"
                   accept="image/*"
@@ -202,7 +207,7 @@ function Category() {
             <div className="text-center">
               {saveEnabled && (
                 <button
-                  className="bg-blue-600 text-white px-6 py-2 mb-8 rounded hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-6 py-2 mb-8 rounded hover:bg-blue-700 w-full sm:w-auto"
                   onClick={handleSaveCategory}
                 >
                   {editing ? "Update Category" : "Save Category"}
@@ -213,20 +218,17 @@ function Category() {
         </div>
       )}
 
+      {/* Delete Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white flex flex-col justify-center items-center p-6 rounded-lg shadow-md w-full max-w-md text-center relative">
-            {/* <button
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-2xl font-bold"
-              onClick={() => setShowDeleteModal(false)}
-            >
-              ×
-            </button> */}
             <h2 className="text-lg font-semibold text-gray-800 mb-2">
               Are you sure you want to delete this category?
             </h2>
-            <p className="text-gray-500 text-center mb-6">This action cannot be undone.</p>
-            <div className="flex justify-center gap-4">
+            <p className="text-gray-500 text-center mb-6">
+              This action cannot be undone.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-3 w-full">
               <button
                 onClick={() => {
                   axios
@@ -244,13 +246,13 @@ function Category() {
                       alert("Delete failed");
                     });
                 }}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto"
               >
                 Yes, Delete
               </button>
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300"
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 w-full sm:w-auto"
               >
                 Cancel
               </button>
@@ -259,55 +261,44 @@ function Category() {
         </div>
       )}
 
-      {/* Categories Grid */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {categories.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white border border-gray-100 rounded-lg shadow hover:shadow-lg transition-all p-4 flex flex-col items-center"
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-48 object-cover rounded-lg"
-            />
-            <h2 className="mt-3 text-center font-semibold text-black text-lg">
-              {item.name}
-            </h2>
-            <div className="mt-4 flex gap-6">
-              {/* <img
-                src={edit}
-                alt="edit"
-                className="w-6 h-6 cursor-pointer opacity-80 hover:opacity-100"
-                title="Edit"
-                onClick={() => handleEdit(item.name)}
-              /> */}
-              {/* <img
-                src={del}
-                alt="delete"
-                onClick={() => handleDelete(item.name)}
-                className="w-6 h-6 cursor-pointer opacity-80 hover:opacity-100"
-                title="Delete"
-              /> */}
-              <button
-                className="border bg-green-600 text-white shadow-md px-6 py-2 rounded-full"
-                onClick={() => handleEdit(item.name)}
-              >
-                Edit Category
-              </button>
-              <button
-                className="border bg-red-500 text-white shadow-md px-6 py-2 rounded-full"
-                onClick={() => {
-                  setCategoryToDelete(item.name);
-                  setShowDeleteModal(true);
-                }}
-              >
-                Delete Category
-              </button>
-            </div>
-          </div>
-        ))}
+    {/* Categories Grid */}
+<div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {categories.map((item, index) => (
+    <div
+      key={index}
+      className="bg-white border border-gray-100 rounded-lg shadow hover:shadow-lg transition-all 
+                 p-4 flex flex-col items-center dark:bg-slate-800"
+    >
+      <img
+        src={item.image}
+        alt={item.name}
+        className="w-full h-40 sm:h-48 object-cover rounded-lg"
+      />
+      <h2 className="mt-3 text-center font-semibold text-black text-lg dark:text-white">
+        {item.name}
+      </h2>
+
+      <div className="mt-4 flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center">
+        <button
+          className="flex-1 sm:flex-none bg-green-600 text-white shadow-md px-4 py-2 rounded-lg hover:bg-green-700"
+          onClick={() => handleEdit(item.name)}
+        >
+          Edit
+        </button>
+        <button
+          className="flex-1 sm:flex-none bg-red-500 text-white shadow-md px-4 py-2 rounded-lg hover:bg-red-600"
+          onClick={() => {
+            setCategoryToDelete(item.name);
+            setShowDeleteModal(true);
+          }}
+        >
+          Delete
+        </button>
       </div>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }

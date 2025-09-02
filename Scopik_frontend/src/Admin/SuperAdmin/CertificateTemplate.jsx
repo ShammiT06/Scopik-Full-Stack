@@ -146,13 +146,13 @@ function CertificateTemplate() {
 
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md max-w-screen-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-orange-400">
         Certificate Templates
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 mb-8">
         <div>
-          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">
+          <label className="block font-medium mb-1 text-gray-800 dark:text-orange-400">
             Select Course
           </label>
           <select
@@ -170,7 +170,7 @@ function CertificateTemplate() {
         </div>
 
         <div>
-          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">
+          <label className="block font-medium mb-1 text-gray-800 dark:text-orange-400">
             Upload Template Image
           </label>
           <input
@@ -201,7 +201,7 @@ function CertificateTemplate() {
         </button>
       </form>
 
-      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-orange-400">
         Existing Templates
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

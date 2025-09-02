@@ -3018,6 +3018,7 @@ def get_all_student_details(request):
                 'date': pays.payment_date,
                 'course_name': pays.course.name if pays.course else None,
                 'phone_number': pays.phone_number,
+                'payment_date':pays.payment_date,
                 'payment_method':pays.payment_method
                 
             })

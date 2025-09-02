@@ -59,47 +59,6 @@ function Element() {
     setStep(1);
     setCurrentStepCompleted(false);
   };
-
-//   const renderStepContent = () => {
-//   switch (step) {
-//     case 1:
-//       return (
-//         <AddCourse
-//           onSuccess={() => {
-//             setCurrentStepCompleted(true);
-//             setStep(2); // move to step 2 automatically
-//           }}
-//         />
-//       );
-//     case 2:
-//       return (
-//         <AddChapter
-//           onSuccess={() => {
-//             setCurrentStepCompleted(true);
-//             setStep(3); // move to step 3 automatically
-//           }}
-//         />
-//       );
-//     case 3:
-//       return (
-//         <Documents
-//           onSuccess={() => {
-//             setCurrentStepCompleted(true);
-//             setStep(4); // move to step 4 automatically
-//           }}
-//         />
-//       );
-//     case 4:
-//       return (
-//         <AddQuiz
-//           onSuccess={closeModal} // final step closes modal
-//           goToChapterStep={() => setStep(2)}
-//         />
-//       );
-//     default:
-//       return null;
-//   }
-// };
   const renderStepContent = () => {
     switch (step) {
       case 1:
@@ -147,27 +106,27 @@ function Element() {
             className="rounded-xl shadow-md p-8 flex flex-col justify-center bg-cover bg-center h-[200px]"
             style={{ backgroundImage: `url(${bgImage})` }}
           >
-            <h1 className="text-2xl font-semibold text-white drop-shadow">Welcome</h1>
-            <h2 className="text-4xl font-bold text-white drop-shadow mt-2">Scopik Admin</h2>
+            <h1 className="text-2xl font-semibold text-white drop-shadow dark:text-[#FB923C] ">Welcome</h1>
+            <h2 className="text-4xl font-bold text-white drop-shadow mt-2 dark:text-[#FB923C]">Scopik Admin</h2>
           </div>
 
           {/* Buttons */}
           <div className="flex flex-col gap-4 flex-1">
-            <ActionButton text="+ Create Course" color="#00b1ff" onClick={() => setShowModal(true)} />
+            <ActionButton text="+ Create Course"  onClick={() => setShowModal(true)} />
 
             <div className="grid grid-cols-2 gap-4">
-              <ActionButton text="+ Add Student" color="#00b1ff" onClick={() => setShowStudentModal(true)} />
-              <ActionButton text="+ Add Faculty" color="#00b1ff" onClick={() => setShowFacultyModal(true)} />
+              <ActionButton text="+ Add Student"  onClick={() => setShowStudentModal(true)} />
+              <ActionButton text="+ Add Faculty" onClick={() => setShowFacultyModal(true)} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <ActionButton text="+ Certificate Template" color="#00b1ff" onClick={() => setShowCertificateModal(true)} />
-              <ActionButton text="+ Add University" color="#00b1ff" onClick={() => setShowUniversityModal(true)} />
+              <ActionButton text="+ Certificate Template"  onClick={() => setShowCertificateModal(true)} />
+              <ActionButton text="+ Add University"  onClick={() => setShowUniversityModal(true)} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <ActionButton text="+ Add Blog" color="#00b1ff" onClick={() => setShowBlogModal(true)} />
-              <ActionButton text="+ Semester List" color="#00b1ff" onClick={() => setShowSemesterModal(true)} />
+              <ActionButton text="+ Add Blog"  onClick={() => setShowBlogModal(true)} />
+              <ActionButton text="+ Semester List"  onClick={() => setShowSemesterModal(true)} />
             </div>
           </div>
         </div>
@@ -282,15 +241,17 @@ function Modal({ onClose, children, width = "max-w-2xl", height = "h-[80vh]" }) 
 }
 
 function ActionButton({ text, color, onClick }) {
+  const isDarkMode=useTheme()
   return (
+    <div>
     <button
       onClick={onClick}
-      className="w-full px-5 py-4 rounded-md hover:opacity-90 transition font-medium shadow text-white"
+      className={`w-full px-5 py-4 rounded-md hover:opacity-90 transition font-medium shadow  ${isDarkMode?"bg-slate-800 text-orange-400":"bg-[#00b1ff] text-white"}`}
       style={{ backgroundColor: color }}
     >
       {text}
     </button>
-  );
+  </div>);
 }
 
 function StatCard({ count, label }) {

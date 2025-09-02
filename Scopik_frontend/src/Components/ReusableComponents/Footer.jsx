@@ -24,7 +24,7 @@ function Footer() {
   "/": {
     image: home,
     text: `"Empower your learning journey with our curated courses. Discover new skills and grow at your own pace. Join thousands of learners achieving their goals."`,
-    className: "absolute -bottom-28 right-6 lg:w-[35%]"
+    className: "absolute -bottom-[105px] right-6 lg:w-[35%]"
   },
   "/about": {
     image: about,
