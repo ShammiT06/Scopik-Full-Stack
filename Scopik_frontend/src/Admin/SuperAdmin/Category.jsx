@@ -9,7 +9,7 @@ function Category() {
   const [saveEnabled, setSaveEnabled] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editCatName, setEditCatName] = useState("");
-  const [uploading, setUploading] = useState(false); // ?? Added state for loading spinner
+  const [uploading, setUploading] = useState(false); 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
 
@@ -23,7 +23,7 @@ function Category() {
     const file = e.target.files[0];
     if (!file) return;
 
-    setUploading(true); // ?? Start loading spinner
+    setUploading(true);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -46,24 +46,9 @@ function Category() {
       console.error("Error uploading image:", err);
       alert("Image upload failed. Please try again.");
     } finally {
-      setUploading(false); // ? Stop loading spinner
+      setUploading(false);
     }
   };
-
-  // const handleDelete = (categoryName) => {
-  //   axios
-  //     .delete(
-  //       `https://lmsdemo.thirdvizion.com/api/deletecategory/${categoryName}`
-  //     )
-  //     .then(() => {
-  //       setCategories((prev) =>
-  //         prev.filter((item) => item.name !== categoryName)
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error deleting category:", error);
-  //     });
-  // };
 
   const handleSaveCategory = () => {
     if (!desc) {
@@ -134,7 +119,6 @@ function Category() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 rounded-lg bg-white pb-10 dark:bg-slate-900">
-      {/* Header */}
       <div className="bg-white dark:bg-slate-900 p-5 rounded-md shadow-md">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
           <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-orange-400 text-center sm:text-left">
@@ -151,8 +135,6 @@ function Category() {
           </button>
         </div>
       </div>
-
-      {/* Form */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white w-full max-w-4xl p-6 rounded-md shadow-md space-y-4 border border-gray-100 relative dark:bg-slate-900">
@@ -162,8 +144,6 @@ function Category() {
             >
               ×
             </button>
-
-            {/* Responsive Input */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <label className="w-full sm:w-40 font-medium text-black dark:text-white text-center sm:text-left">
                 Category Name:
@@ -217,8 +197,6 @@ function Category() {
           </div>
         </div>
       )}
-
-      {/* Delete Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white flex flex-col justify-center items-center p-6 rounded-lg shadow-md w-full max-w-md text-center relative">
@@ -260,8 +238,6 @@ function Category() {
           </div>
         </div>
       )}
-
-    {/* Categories Grid */}
 <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {categories.map((item, index) => (
     <div

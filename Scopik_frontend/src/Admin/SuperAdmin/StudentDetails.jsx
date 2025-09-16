@@ -58,7 +58,7 @@ function Student_details() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 rounded-lg">
       <div className="flex items-center justify-between mb-6">
         {/* Heading */}
         <h1 className="text-3xl font-bold text-blue-700 dark:text-orange-400">

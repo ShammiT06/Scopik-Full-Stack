@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function AddUniversity() {
   const [university, addUniversity] = useState(false);
@@ -18,11 +18,12 @@ function AddUniversity() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
 
- 
-  const username=import.meta.env.VITE_USER_NAME
-  const password= import.meta.env.VITE_USER_PASS
+  const username = import.meta.env.VITE_USER_NAME;
+  const password = import.meta.env.VITE_USER_PASS;
 
   const token = btoa(`${username}:${password}`);
+
+  const assignFormRef = useRef(null);
 
   useEffect(() => {
     axios.get(import.meta.env.VITE_VIEW_UNIVERSITY).then((data) => {
@@ -45,6 +46,13 @@ function AddUniversity() {
       });
   }, []);
 
+
+  useEffect(() => {
+    if (assign && assignFormRef.current) {
+      assignFormRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [assign]);
+
   function AssignCourse() {
     axios
       .post(import.meta.env.VITE_ASSIGN_UNIV, {
@@ -61,9 +69,7 @@ function AddUniversity() {
     if (!selectedUniversity) return;
 
     axios
-      .delete(
-        `${import.meta.env.VITE_ASSIGN_DELETE}${selectedUniversity}`
-      )
+      .delete(`${import.meta.env.VITE_ASSIGN_DELETE}${selectedUniversity}`)
       .then(() => {
         setCampus((prev) =>
           prev.filter((item) => item.name !== selectedUniversity)
@@ -83,13 +89,10 @@ function AddUniversity() {
     data.append("upload_preset", "Scopik");
     data.append("cloud_name", "dm8wceqw2");
 
-    const Response = await fetch(
-      import.meta.env.VITE_CLOUD_IMAGE,
-      {
-        method: "POST",
-        body: data,
-      }
-    );
+    const Response = await fetch(import.meta.env.VITE_CLOUD_IMAGE, {
+      method: "POST",
+      body: data,
+    });
     const convertedUrl = await Response.json();
     console.log(convertedUrl.url);
     setLoading(true);
@@ -140,9 +143,11 @@ function AddUniversity() {
   return (
     <>
       {/* Header */}
-      <div className="p-5 border border-[#071f36c3] bg-white shadow-xl rounded-xl">
+      <div className="p-5  bg-white shadow-xl rounded-xl dark:bg-slate-900">
         <div className="w-full flex justify-between items-center">
-          <h1 className="text-2xl font-news font-bold">Universities</h1>
+          <h1 className="text-2xl font-news font-bold dark:text-orange-400">
+            Universities
+          </h1>
           <button
             onClick={() => addUniversity(!university)}
             className="bg-green-500 p-2 rounded-md text-white"
@@ -155,7 +160,7 @@ function AddUniversity() {
       {/* University Form */}
       {university && (
         <div className="flex items-center justify-center mt-10">
-          <div className="relative bg-white p-6 w-full max-w-5xl rounded-lg shadow-lg">
+          <div className="relative bg-white p-6 w-full max-w-5xl rounded-lg shadow-lg dark:bg-slate-900">
             <button
               className="absolute top-4 right-6 text-gray-500 hover:text-red-600 text-4xl"
               onClick={() => addUniversity(false)}
@@ -163,21 +168,21 @@ function AddUniversity() {
             >
               &times;
             </button>
-            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6 font-news">
+            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6 font-news dark:text-white">
               University Registration
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name */}
               <div className="flex flex-col">
-                <label className="mb-1 font-news text-gray-700 text-lg">
+                <label className="mb-1 font-news text-gray-700 text-lg dark:text-white">
                   Name
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white ${
                     errors.name ? "border-red-500" : ""
                   }`}
                 />
@@ -188,14 +193,14 @@ function AddUniversity() {
 
               {/* Email */}
               <div className="flex flex-col">
-                <label className="mb-1 font-news text-gray-700 text-lg">
+                <label className="mb-1 font-news text-gray-700 text-lg dark:text-white">
                   E-mail
                 </label>
                 <input
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500  dark:bg-slate-800 dark:text-white ${
                     errors.email ? "border-red-500" : ""
                   }`}
                 />
@@ -206,14 +211,14 @@ function AddUniversity() {
 
               {/* Address */}
               <div className="flex flex-col">
-                <label className="mb-1 font-news text-gray-700 text-lg">
+                <label className="mb-1 font-news text-gray-700 text-lg dark:text-white">
                   Address
                 </label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white ${
                     errors.address ? "border-red-500" : ""
                   }`}
                 />
@@ -224,14 +229,14 @@ function AddUniversity() {
 
               {/* Password */}
               <div className="flex flex-col">
-                <label className="mb-1 font-news text-gray-700 text-lg">
+                <label className="mb-1 font-news text-gray-700 text-lg dark:text-white">
                   Password
                 </label>
                 <input
                   type="text"
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
-                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white ${
                     errors.pass ? "border-red-500" : ""
                   }`}
                 />
@@ -242,14 +247,14 @@ function AddUniversity() {
 
               {/* Logo Upload */}
               <div className="flex flex-col md:col-span-2">
-                <label className="mb-1 font-news text-gray-700 text-lg">
+                <label className="mb-1 font-news text-gray-700 text-lg dark:text-white">
                   Logo
                 </label>
                 <input
                   type="file"
                   onChange={handleLogo}
                   accept=".jpeg,.jpg,.png"
-                  className="p-2 border rounded focus:outline-none"
+                  className="p-2 border rounded focus:outline-none dark:bg-slate-800 dark:text-white  "
                 />
                 {errors.logo && (
                   <p className="text-red-500 text-sm mt-1">{errors.logo}</p>
@@ -272,7 +277,10 @@ function AddUniversity() {
 
       {/* Assign Course Form */}
       {assign && (
-        <div className="relative bg-white p-6 mt-6 rounded-lg shadow-lg text-base sm:text-lg font-news">
+        <div
+          ref={assignFormRef} // 🔹 Ref attached
+          className="relative bg-white p-6 mt-6 rounded-lg shadow-lg text-base sm:text-lg font-news dark:bg-slate-900"
+        >
           <button
             className="absolute top-4 right-8 text-gray-500 hover:text-red-600 text-5xl"
             onClick={() => setAssign(false)}
@@ -280,17 +288,19 @@ function AddUniversity() {
           >
             &times;
           </button>
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 text-center">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 text-center dark:text-white">
             Assign Course to University
           </h2>
 
           <div className="flex gap-5 mb-10">
             <div className="w-full flex flex-col items-start gap-2">
-              <label className="font-medium text-gray-700">University</label>
+              <label className="font-medium text-gray-700 dark:text-white">
+                University
+              </label>
               <select
                 value={uniName}
                 onChange={(e) => setuniName(e.target.value)}
-                className="border border-gray-300 p-2 rounded-md w-full"
+                className="border border-gray-300 p-2 rounded-md w-full dark:bg-slate-800 dark:text-white"
               >
                 <option disabled>Choose Your University</option>
                 {campus.map((item, index) => (
@@ -300,11 +310,13 @@ function AddUniversity() {
             </div>
 
             <div className="w-full flex flex-col items-start gap-2">
-              <label className="font-medium text-gray-700">Courses</label>
+              <label className="font-medium text-gray-700 dark:text-white">
+                Courses
+              </label>
               <select
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
-                className="border border-gray-300 p-2 rounded-md w-full"
+                className="border border-gray-300 p-2 rounded-md w-full dark:bg-slate-800 dark:text-white"
               >
                 <option disabled>Choose Course</option>
                 {newCourse.map((item, index) => (
@@ -361,17 +373,19 @@ function AddUniversity() {
       )}
 
       {/* University List */}
-      <div className="w-full h-[450px] bg-white mt-3 rounded-xl p-5 overflow-y-auto space-y-4">
+      <div className="w-full bg-white mt-3 rounded-xl p-5 space-y-4 dark:bg-slate-900">
         {campus.map((item, index) => (
           <div
             key={index}
-            className={`p-2 rounded-md ${
-              index % 2 === 0 ? "bg-white" : "bg-[#EDF8FD]"
-            } ${
-              item.name === "Scopik"
-                ? "flex flex-col items-center justify-center text-center gap-2"
-                : "flex items-center justify-between gap-4"
-            }`}
+            className={`
+        p-4 rounded-md flex flex-col sm:flex-row items-center sm:items-center 
+        justify-between gap-4 sm:gap-6 text-center sm:text-left
+        ${
+          index % 2 === 0
+            ? "bg-white dark:bg-slate-900 dark:text-white"
+            : "bg-[#EDF8FD] dark:bg-slate-800 dark:text-white"
+        }
+      `}
           >
             {/* Logo */}
             <img
@@ -392,6 +406,7 @@ function AddUniversity() {
                 >
                   Assign Course
                 </button>
+
                 <button
                   onClick={() => {
                     setSelectedUniversity(item.name);
@@ -423,4 +438,5 @@ function AddUniversity() {
     </>
   );
 }
+
 export default AddUniversity;

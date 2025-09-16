@@ -10,13 +10,15 @@ import { MdAssignment, MdBarChart, MdSettings } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 import useTheme from "/src/Hooks/ThemeHook";
+import { GiProgression } from "react-icons/gi";
 
 import Header from "/src/Components/ReusableComponents/Header.jsx";
 import Teacherhome from "/src/Dashboard/Teacher/TeacherHome.jsx";
 import Courses from "/src/Dashboard/Teacher/AssignedCourse.jsx";
 import Students from "/src/Dashboard/Teacher/AssignedStudents.jsx";
 import Settings from "../../Components/Settings"
-import { Settings2 } from "lucide-react";
+import StudentsProgress from "./StudentProgress";
+import { Settings2, SettingsIcon } from "lucide-react";
 
 function Teacherdashboard() {
   const isDarkMode = useTheme();
@@ -25,6 +27,7 @@ function Teacherdashboard() {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const storedEmail = localStorage.getItem("userEmail");
+  const [dashboardData, setDashboardData] = useState(null);
 
   const handleIconClick = (icon) => {
     setActiveIcon(icon);
@@ -60,21 +63,26 @@ function Teacherdashboard() {
     { id: "dashboard", icon: HiOutlineHome, label: "Dashboard" },
     { id: "icon2", icon: MdAssignment, label: "Assigned Courses" },
     { id: "icon3", icon: MdBarChart, label: "Assigned Students" },
-    {id:"icon4",icon:Settings2, label:"Settings"}
+    {id:"icon5",icon:GiProgression, label:"Student Progress"},
+    {id:"icon4",icon:SettingsIcon, label:"Settings"}
   ];
 
   const renderComponent = () => {
-    switch (activeIcon) {
-      case "dashboard":
-        return <Teacherhome />;
-      case "icon2":
-        return <Courses />;
-      case "icon3":
-        return <Students />;
-      case "icon4":
-        return <Settings />
-    }
-  };
+  switch (activeIcon) {
+    case "dashboard":
+      return <Teacherhome />;
+    case "icon2":
+      return <Courses />;
+    case "icon3":
+      return <Students />;
+    case "icon4":
+      return <Settings />;
+    case "icon5":
+      return <StudentsProgress />;
+    default:
+      return <Teacherhome />;
+  }
+};
 
   return (
     <div
@@ -176,4 +184,3 @@ function Teacherdashboard() {
 }
 
 export default Teacherdashboard;
-

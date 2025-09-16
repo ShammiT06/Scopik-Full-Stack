@@ -16,7 +16,7 @@ function Contact() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 rounded-lg">
       {/* Heading */}
       <div className="flex flex-col items-center mb-6">
         <h2 className="text-3xl font-bold text-blue-700 dark:text-orange-400">

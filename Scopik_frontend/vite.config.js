@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // this will proxy all requests starting with /api
       '/api': {
-        target: 'https://lmsdemo.thirdvizion.com/',
+        target: 'http://127.0.0.1:8000/',
         changeOrigin: true,
         secure: false,
       },

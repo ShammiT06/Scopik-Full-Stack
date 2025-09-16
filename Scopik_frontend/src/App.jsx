@@ -29,6 +29,9 @@ import Super from "./Admin/SuperAdmin/Superadmin";
 import UniversityDashboard from "./Dashboard/UnivAdmin/UniversityDashboard";
 import Teacherdashboard from "./Dashboard/Teacher/Teacherdashboard";
 import StudentDashboard from "./Dashboard/Student/StudentDashboard";
+import TermsAndConditions from "./Policies/Terms";
+import PrivacyPolicy from "./Policies/Policy";
+import RefundPolicy from "./Policies/Refund";
 
 const loginContext = createContext();
 const CourseContext = createContext();
@@ -101,6 +104,9 @@ function App() {
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/blogs/:id" element={<InnerBlog />} />
               <Route path="/semesters" element={<SemesterList />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions/>} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy/> } />
+              <Route path="/refund_returns" element={<RefundPolicy/>} />
               <Route path="/semesters/:id" element={<SemesterDetail />} />
             </Route>
 
