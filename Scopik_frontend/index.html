@@ -25,6 +25,24 @@
       rel="stylesheet"
     />
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Disable Right Click Inspect -->
+    <script>
+      document.addEventListener("contextmenu", (event) =>
+        event.preventDefault()
+      );
+    </script>
+    <!-- Disable Inspect Key  -->
+    <script>
+      document.onkeydown = function (e) {
+        if (
+          e.key === "F12" ||
+          (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
+          (e.ctrlKey && e.key === "U")
+        ) {
+          return false;
+        }
+      };
+    </script>
   </head>
 
   <body>
