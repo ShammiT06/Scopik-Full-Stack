@@ -53,7 +53,7 @@ function Teacherthird() {
     })
     .catch((err) => {
       console.error(
-        `❌ Error fetching progress for ${studentEmail} in ${courseName}:`,
+        `Error fetching progress for ${studentEmail} in ${courseName}:`,
         err
       );
     });

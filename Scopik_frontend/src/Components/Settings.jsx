@@ -24,7 +24,6 @@ function EditProfile() {
       .get(`${import.meta.env.VITE_VIEW_PROFILE}${userEmail}/`)
       .then((res) => {
         const data = res.data;
-        console.log(data);
         setName(data.name || "");
         setPhone(data.phone || "");
         setAcademicYear(data.academicYear || "");
@@ -75,8 +74,7 @@ function EditProfile() {
       profile_img: profilePhoto,
     };
 
-    // Only include academicYear if NOT Faculty OR NOT Scopik
-    if (!(role === "Faculty" || university === "Scopik")) {
+     if (!(role === "Faculty" || university === "Scopik")) {
       payload.academicYear = academicYear;
     }
 
@@ -158,8 +156,6 @@ function EditProfile() {
               required
             />
           </div>
-
-          {/* 👇 Hide Academic Year if role == Faculty OR university == Scopik */}
           {!(role === "Faculty" || university === "Scopik") && (
             <div>
               <label className="block mb-1 text-sm font-medium">Academic Year</label>
@@ -181,7 +177,6 @@ function EditProfile() {
               </select>
             </div>
           )}
-
           <button
             type="submit"
             disabled={loading}

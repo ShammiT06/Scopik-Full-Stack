@@ -21,7 +21,7 @@ function StudentDashboard() {
   const [active, setActive] = useState("dashboard");
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [university, setUniversity] = useState(""); // ? university state
+  const [university, setUniversity] = useState(""); 
   const isDarkMode = useTheme();
   const Uemail = localStorage.getItem("userEmail");
 
@@ -29,7 +29,7 @@ function StudentDashboard() {
     axios
       .get(`${import.meta.env.VITE_STUDENT_PROGRESS}?email=${Uemail}`)
       .then((res) => {
-        setUniversity(res.data.student.university); // ? store university
+        setUniversity(res.data.student.university);
       })
       .catch((err) => {
         console.error("Error fetching student university:", err);
@@ -58,8 +58,6 @@ function StudentDashboard() {
     { id: "certificates", icon: <FaCertificate />, label: "Certificates" },
     { id: "Semesters", icon: <FaRegNoteSticky />, label: "Semester Details" },
   ];
-
-  // ? Conditionally filter items if university is "Scopik"
   const filteredItems =
     university === "Scopik"
       ? items.filter((item) => item.id !== "Semesters")

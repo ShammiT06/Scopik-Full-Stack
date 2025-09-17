@@ -1,8 +1,6 @@
-import React from "react";
-
 const StarRating = ({ rating }) => {
   const totalStars = 5;
-  const numericRating = parseFloat(rating); // Convert to number safely
+  const numericRating = parseFloat(rating);
 
   const getStarClass = (index) => {
     if (rating >= index + 1) return "text-orange-400";

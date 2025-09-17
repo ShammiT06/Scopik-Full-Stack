@@ -15,7 +15,6 @@ function StudentHome() {
   const [image, setImage] = useState("");
   const [imageError, setImageError] = useState(false);
   const usedata=localStorage.getItem("user_type")
-  // console.log(usedata)
 
   const { Course } = useContext(CourseContext);
   const isDarkMode = useTheme();
@@ -28,7 +27,6 @@ function StudentHome() {
         params: { email: Uemail },
       })
       .then((json) => {
-        console.log(json.data)
         setName(json.data.student.name);
         setRegistered(json.data.courses.course_details);
         setGained(json.data.courses.certificate_gained);
@@ -36,8 +34,6 @@ function StudentHome() {
         setMail(json.data.student.email);
         setTotal(json.data.courses.total);
         setImage(json.data.student.profile_img);
-
-        // fetch progress for each registered course
         json.data.courses.course_details.forEach((course) => {
           fetchProgress(course.course_name);
         });
@@ -45,8 +41,6 @@ function StudentHome() {
       .catch((err) => {
         console.error("Error fetching student progress:", err);
       });
-    // If Uemail may change during session, add it to deps. Keeping empty as original behaviour.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProgress = (courseName) => {
@@ -58,8 +52,6 @@ function StudentHome() {
         },
       })
       .then((res) => {
-        // console.log(`Progress for course ${courseName}:`, res.data);
-
         const completedChapters = res.data.chapters?.length || 0;
         const totalChapters = res.data.total || 0;
 
@@ -96,11 +88,9 @@ function StudentHome() {
 
   return (
     <div className="w-full px-0 md:px-4">
-      {/* Top Section */}
       <div
         className={`mt-5 flex flex-col gap-6 ${isDarkMode ? "text-white" : "text-black"}`}
       >
-        {/* Profile Card */}
         <div
           className={`w-full rounded-xl p-6 shadow-lg transition-all duration-300 hover:shadow-2xl ${
             isDarkMode ? "bg-zinc-900" : "bg-white"
@@ -145,8 +135,6 @@ function StudentHome() {
           </div>
         </div>
       </div>
-
-      {/* Courses Section */}
       <div className="mb-10">
         <h1 className={`text-2xl sm:text-3xl lg:text-4xl mt-10 mb-5 font-semibold ${isDarkMode ? "text-white" : "text-black"}`}>
           Your Courses
@@ -188,12 +176,9 @@ function StudentHome() {
                     <p className="text-sm text-gray-500 dark:text-gray-400">Enrolled</p>
                   </div>
                 </div>
-
-                {/* Progress Bar - only percentage shown */}
                 <div className="mt-3">
                   <div className="flex justify-between text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                     <span>{percent}% Completed</span>
-                    {/* chapter count removed as requested */}
                   </div>
                   <div className="w-full h-2 bg-gray-300 rounded-full mt-1 overflow-hidden">
                     <div

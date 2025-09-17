@@ -14,8 +14,6 @@ const SetPassword = () => {
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-
-  //Validate password strength
   const isValidPassword = (pwd) => {
     const length = pwd.length >= 6;
     const hasLetter = /[a-zA-Z]/.test(pwd);
@@ -66,7 +64,6 @@ const SetPassword = () => {
         {error && <p className="text-red-500 text-center mb-2">{error}</p>}
 
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
-          {/* New Password */}
           <div className="mb-4 w-full flex flex-col items-center relative">
             <label className="self-start ml-2 mb-1 font-medium">New Password</label>
             <input
@@ -83,8 +80,6 @@ const SetPassword = () => {
               {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
             </div>
           </div>
-
-          {/* Confirm Password */}
           <div className="mb-4 w-full flex flex-col items-center relative">
             <label className="self-start ml-2 mb-1 font-medium">Confirm Password</label>
             <input

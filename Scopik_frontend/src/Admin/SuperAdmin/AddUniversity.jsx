@@ -42,7 +42,7 @@ function AddUniversity() {
         setNewcourse(res.data);
       })
       .catch((err) => {
-        console.log("Error", err);
+        console.error("Error", err);
       });
   }, []);
 
@@ -74,7 +74,6 @@ function AddUniversity() {
         setCampus((prev) =>
           prev.filter((item) => item.name !== selectedUniversity)
         );
-        console.log("Deleted:", selectedUniversity);
         setShowDeleteModal(false);
         setSelectedUniversity(null);
       });
@@ -94,7 +93,6 @@ function AddUniversity() {
       body: data,
     });
     const convertedUrl = await Response.json();
-    console.log(convertedUrl.url);
     setLoading(true);
     setLogo(convertedUrl.url);
   }
@@ -126,7 +124,6 @@ function AddUniversity() {
         logo,
       })
       .then(() => {
-        console.log("Data sent successfully");
         addUniversity(false);
         setName("");
         setEmail("");
@@ -136,7 +133,7 @@ function AddUniversity() {
         setCampus((prev) => [...prev, { name, email, address, logo }]);
       })
       .catch((error) => {
-        console.log("Error", error);
+        console.error("Error", error);
       });
   }
 

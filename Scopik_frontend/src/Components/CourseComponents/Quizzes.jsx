@@ -15,8 +15,8 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
   const [review, setReview] = useState("");
   const [chapterMarkedComplete, setChapterMarkedComplete] = useState(false);
   const [certificateDownloaded, setCertificateDownloaded] = useState(false);
-  const [showCompletionModal, setShowCompletionModal] = useState(false); // ? Completion modal state
-  const [showGeneratingModal, setShowGeneratingModal] = useState(false); // ? Certificate generating modal state
+  const [showCompletionModal, setShowCompletionModal] = useState(false); 
+  const [showGeneratingModal, setShowGeneratingModal] = useState(false); 
 
   const navigate = useNavigate();
   const certificateKey = `certificateDownloaded_${userEmail}_${courseName}`;
@@ -122,15 +122,15 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
         course: courseName,
       })
       .then(() => {
-        setShowCompletionModal(true); // ? Open completion modal
+        setShowCompletionModal(true); 
         setChapterMarkedComplete(true);
-        localStorage.setItem(completionKey, "true");
+        localStorage.setItem(completionKey, "true")
 
         if (onNextChapter) {
           onNextChapter(chapterId);
         }
       })
-      .catch((err) => console.log("Error", err));
+      .catch((err) => console.error("Error", err))
   };
 
   const handleCertificateRedirect = async () => {
@@ -139,7 +139,7 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
       return;
     }
 
-    setShowGeneratingModal(true); // Show generating modal on start
+    setShowGeneratingModal(true)
 
     try {
       const feedbackPayload = {
@@ -159,14 +159,14 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
         localStorage.setItem(certificateKey, "true");
         localStorage.setItem("completedCourseName", courseName);
         setCertificateDownloaded(true);
-        setShowGeneratingModal(false); // Hide modal before redirect
+        setShowGeneratingModal(false); 
         navigate("/certificate");
       } else {
-        setShowGeneratingModal(false); // Hide modal on failure
+        setShowGeneratingModal(false); 
         alert("Feedback submission failed. Try again.");
       }
     } catch (error) {
-      setShowGeneratingModal(false); // Hide modal on error
+      setShowGeneratingModal(false)
       console.error("Error in certificate flow:", error);
       alert("Something went wrong while generating the certificate.");
     }
@@ -174,7 +174,7 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
 
   const needsRestart = showResult && score < quizzes.length;
   const showReviewInstead =
-    showResult && score === quizzes.length && isLastChapter && allChaptersCompleted && chapterMarkedComplete;
+  showResult && score === quizzes.length && isLastChapter && allChaptersCompleted && chapterMarkedComplete;
 
   return (
     <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-white dark:bg-black rounded-lg shadow border border-zinc-700 text-white overflow-y-auto max-h-[calc(100vh-100px)]">
@@ -315,7 +315,6 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
           )}
         </>
       )}
-
       {/* ? Completion Modal */}
       {showCompletionModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -331,7 +330,6 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
           </div>
         </div>
       )}
-
       {/* ? Certificate Generating Modal */}
       {showGeneratingModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

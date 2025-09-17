@@ -14,7 +14,6 @@ function About() {
   return (
     <>
       <ScopikCard />
-      {/* <LearnScopik /> */}
       <Partners />
       <Stats />
       <Policy />

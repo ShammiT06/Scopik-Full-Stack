@@ -13,8 +13,6 @@ function UniversityLogin() {
   const navigate = useNavigate();
 
   const { login, setLogin, setUserEmail } = useContext(loginContext);
-
-  // Auto redirect if already logged in
   useEffect(() => {
     if (login) navigate("/univAdmin");
   }, [login, navigate]);
@@ -38,15 +36,11 @@ function UniversityLogin() {
       });
 
       const data = res.data;
-
-      // Save tokens and user details
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
       localStorage.setItem("userRole", "University_admin");
       localStorage.setItem("login_time", login_time);
       localStorage.setItem("userEmail", email);
-
-      // ? Save university name if provided
       if (data.user && data.user.university_name) {
         localStorage.setItem("universityName", data.user.university_name);
       } else {

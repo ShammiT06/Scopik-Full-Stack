@@ -7,8 +7,8 @@ import Header from "/src/Components/ReusableComponents/Header.jsx";
 import { jsPDF } from "jspdf";
 
 export default function Certificate() {
-  const [certificateUrl, setCertificateUrl] = useState(""); // for preview
-  const [shareLink, setShareLink] = useState(""); // direct .jpg link
+  const [certificateUrl, setCertificateUrl] = useState("");
+  const [shareLink, setShareLink] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,12 +24,8 @@ export default function Certificate() {
       setLoading(false);
       return;
     }
-
-    // Direct URL for sharing (public .jpg)
     const directUrl = `${import.meta.env.VITE_CERTIFICATE_VIEW}?email=${userEmail}&course=${courseName}`;
     setShareLink(directUrl);
-
-    // Fetch Blob for preview and PDF download
     axios
       .get(directUrl, { responseType: "blob" })
       .then((res) => {

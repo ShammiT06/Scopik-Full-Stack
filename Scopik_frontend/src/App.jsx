@@ -156,8 +156,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Catch-all */}
             <Route path="*" element={<Forbidden403 />} />
           </Routes>
         </BrowserRouter>

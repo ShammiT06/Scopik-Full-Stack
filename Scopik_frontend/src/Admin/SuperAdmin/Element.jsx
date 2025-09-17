@@ -64,26 +64,26 @@ function Element() {
       case 1:
         return (
           <AddCourse
-            onSuccess={() => setStep(2)} // go to step 2
+            onSuccess={() => setStep(2)}
           />
         );
       case 2:
         return (
           <AddChapter
-            onSuccess={() => setStep(3)} // go to step 3
+            onSuccess={() => setStep(3)}
           />
         );
       case 3:
         return (
           <Documents
-            onSuccess={() => setStep(4)} // go to step 4
+            onSuccess={() => setStep(4)}
           />
         );
       case 4:
         return (
           <AddQuiz
-            onSuccess={closeModal} // finish wizard
-            goToChapterStep={() => setStep(2)} // optional back navigation
+            onSuccess={closeModal}
+            goToChapterStep={() => setStep(2)}
           />
         );
       default:

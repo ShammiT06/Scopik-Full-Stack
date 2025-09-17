@@ -21,7 +21,7 @@ export default function ScopikBanner() {
 
   return (
     <div className="relative w-full overflow-hidden">
-      {/* Top Curve — first thing on the page */}
+      {/* Top Curve first thing on the page */}
       <div className="absolute top-0 left-0 w-full z-0">
         <svg
           className="block w-full h-[120px] transition-colors duration-500"

@@ -34,7 +34,7 @@ function AnyQuery() {
           message: message,
         })
         .then(() => {
-          setShowModal(true); // Show success modal
+          setShowModal(true)
         })
         .catch(() => {
           console.error("Error in sending Data");
@@ -55,7 +55,6 @@ function AnyQuery() {
       }`}
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 items-start">
-        {/* Left Content */}
         <div className="md:w-2/3 space-y-4">
           <h4 className="text-orange-500 text-lg font-semibold uppercase">
             Any Queries?
@@ -79,8 +78,6 @@ function AnyQuery() {
             className="w-80 sm:w-[22] lg:w-[26rem] xl:w-[28rem] -mt-6 mb-4"
           />
         </div>
-
-        {/* Right Form */}
         <div
           className={`md:w-1/2 xl:w-1/3 w-full p-6 sm:p-8 rounded-xl shadow-lg border transition-colors duration-300 ${
             isDarkMode
@@ -92,7 +89,6 @@ function AnyQuery() {
             Get in Touch
           </h3>
           <div className="space-y-5">
-            {/* Name */}
             <div>
               <label className="block text-sm font-medium text-orange-300 mb-1">
                 Name
@@ -111,8 +107,6 @@ function AnyQuery() {
                 <p className="text-red-400 text-sm mt-1">{errors.name}</p>
               )}
             </div>
-
-            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-orange-300 mb-1">
                 E-mail
@@ -131,8 +125,6 @@ function AnyQuery() {
                 <p className="text-red-400 text-sm mt-1">{errors.email}</p>
               )}
             </div>
-
-            {/* Phone */}
             <div>
               <label className="block text-sm font-medium text-orange-300 mb-1">
                 Phone No.
@@ -156,8 +148,6 @@ function AnyQuery() {
                 <p className="text-red-400 text-sm mt-1">{errors.phone}</p>
               )}
             </div>
-
-            {/* Message */}
             <div>
               <label className="block text-sm font-medium text-orange-300 mb-1">
                 Message
@@ -176,8 +166,6 @@ function AnyQuery() {
                 <p className="text-red-400 text-sm mt-1">{errors.message}</p>
               )}
             </div>
-
-            {/* Submit Button */}
             <button
               type="button"
               onClick={handleSendMessage}
@@ -188,7 +176,6 @@ function AnyQuery() {
           </div>
         </div>
       </div>
-
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div

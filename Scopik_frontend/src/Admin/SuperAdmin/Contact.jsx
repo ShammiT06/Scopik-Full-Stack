@@ -17,14 +17,11 @@ function Contact() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 rounded-lg">
-      {/* Heading */}
       <div className="flex flex-col items-center mb-6">
         <h2 className="text-3xl font-bold text-blue-700 dark:text-orange-400">
           Contact Queries
         </h2>
       </div>
-
-      {/* Table */}
       <div className="overflow-x-auto shadow-md rounded-lg">
         <table className="min-w-full text-sm border border-gray-300 dark:border-gray-700">
           <thead className="bg-blue-600 text-white dark:bg-gray-800">

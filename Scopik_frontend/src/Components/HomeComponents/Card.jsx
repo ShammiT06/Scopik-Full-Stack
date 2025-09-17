@@ -13,9 +13,7 @@ import "swiper/css/pagination";
 import { Link } from "react-router-dom";
 
 import { CourseContext } from "/src/App";
-import useTheme from "/src/Hooks/ThemeHook.js"; // ?? import custom hook
-
-// Background images for each theme
+import useTheme from "/src/Hooks/ThemeHook.js";
 import bgDark from "../../assets/newImage/new_bg2.png";
 import bgLight from "../../assets/newImage/new_bg.png";
 
@@ -23,7 +21,7 @@ import bgLight from "../../assets/newImage/new_bg.png";
 export default function NewsSlider() {
   const bgRef = useRef(null);
   const { Course } = useContext(CourseContext);
-  const isDarkMode = useTheme(); // ?? use theme status
+  const isDarkMode = useTheme();
 
   const updateBackground = (el) => {
     if (!bgRef.current || !el) return;
@@ -44,7 +42,6 @@ export default function NewsSlider() {
 
   return (
     <div className="relative w-full pb-20 overflow-hidden transition-colors duration-500">
-      {/* Dynamic Background Image */}
       <div className="absolute w-full h-full z-0">
         <img
           src={backgroundImage}
@@ -52,22 +49,17 @@ export default function NewsSlider() {
           alt="background"
         />
       </div>
-
-      {/* Glowing white background card */}
       <div ref={bgRef}
        className="item-bg absolute bg-white rounded-xl shadow-[0_0_40px_rgba(255,255,255,0.4)] z-0 transition-all duration-500 opacity-90">
        </div>
 
      <div className="relative z-10 max-w-[1300px] mx-auto mt-20">
   <div className="relative flex items-center justify-between gap-10">
-    {/* Left Arrow */}
     <button className="news-slider__arrow news-slider-prev left-8 bg-white hover:bg-orange-500 transition-all w-12 h-12 md:w-[50px] md:h-[50px] rounded-full shadow-xl flex justify-center items-center z-20">
       <svg className="w-4 h-4 text-black" viewBox="0 0 32 32">
         <path d="M0.704 17.696l9.856 9.856c0.896 0.896 2.432 0.896 3.328 0s0.896-2.432 0-3.328l-5.792-5.856h21.568c1.312 0 2.368-1.056 2.368-2.368s-1.056-2.368-2.368-2.368h-21.568l5.824-5.824c0.896-0.896 0.896-2.432 0-3.328-0.48-0.48-1.088-0.704-1.696-0.704s-1.216 0.224-1.696 0.704l-9.824 9.824c-0.448 0.448-0.704 1.056-0.704 1.696s0.224 1.248 0.704 1.696z" />
       </svg>
     </button>
-
-    {/* This is your existing Swiper (KEEP this part untouched) */}
     <Swiper
       className="w-full px-4"
       modules={[Navigation, Pagination, EffectCoverflow, Keyboard]}
@@ -116,7 +108,6 @@ export default function NewsSlider() {
         }
       }}
     >
-      {/* Your SwiperSlides stay the same */}
       {Course.map((item, idx) => (
   <SwiperSlide key={idx}>
     {({ isActive, isNext, isPrev }) => (
@@ -132,8 +123,6 @@ export default function NewsSlider() {
     : "opacity-0 pointer-events-none"
 }`}
 >
-
-          {/* Title & Description */}
           <div>
             <h2 className="text-2xl md:text-3xl font-semibold mb-4 font-bruel transition-colors">
               {item.name}

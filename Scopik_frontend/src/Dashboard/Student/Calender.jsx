@@ -17,7 +17,7 @@ function Calender() {
         },
       })
       .then((response) => {
-        setAccessedDates(response.data.hours_spent); // e.g. { "2025-05-28": 0, "2025-05-29": 0.72 }
+        setAccessedDates(response.data.hours_spent);
       })
       .catch((error) => {
         console.error("Error fetching accessed dates:", error);
@@ -26,9 +26,9 @@ function Calender() {
 
   const tileClassName = ({ date, view }) => {
     if (view === "month") {
-      const formattedDate = date.toLocaleDateString("en-CA"); // Ensures YYYY-MM-DD format
+      const formattedDate = date.toLocaleDateString("en-CA");
       if (accessedDates.hasOwnProperty(formattedDate)) {
-        return "highlight-date"; // Apply highlight style
+        return "highlight-date";
       }
     }
     return null;

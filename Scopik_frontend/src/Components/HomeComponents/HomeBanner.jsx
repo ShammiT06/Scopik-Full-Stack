@@ -15,7 +15,7 @@ function HomeBanner() {
           'Explore. Interact. Learn like', 500,
           'Explore. Interact. Learn like never', 500,
           'Explore. Interact. Learn like never before.', 2000,
-          '', 1000 // clears the text and pauses before restarting
+          '', 1000 
         ]}
         wrapper="h1"
         className="text-white p-4 text-6xl text-center leading-[100px] whitespace-pre-line"

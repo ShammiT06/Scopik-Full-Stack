@@ -138,7 +138,7 @@ function InnerCourse() {
                 }
               );
 
-              setPay(false); // ? Auto-close payment popup
+              setPay(false); 
               setShowModal({
                 visible: true,
                 message: "You have been successfully enrolled!",
@@ -331,7 +331,6 @@ function InnerCourse() {
         </div>
       </div>
       {/* Full-width sections end here */}
-
       {pay && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
           <div className={`rounded-xl shadow-lg w-full max-w-lg px-6 sm:px-10 py-6 relative transition-all duration-300 ${

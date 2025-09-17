@@ -20,7 +20,7 @@ function FinishedCourses() {
         setCourse(res.data);
       })
       .catch((err) => {
-        console.log("Error", err);
+        console.error("Error", err);
       });
   }, [teacherName]);
 
@@ -62,7 +62,6 @@ function FinishedCourses() {
             }`}
           />
         </div>
-
         {/* Scrollable Course Cards */}
         <div className="max-h-[70vh] overflow-y-auto pr-2 pb-4">
           <div className="flex flex-wrap gap-6 justify-start">

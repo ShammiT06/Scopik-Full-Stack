@@ -34,7 +34,6 @@ function SemesterList() {
 
   useEffect(() => {
   if (showForm && editMode) {
-    // Wait a tick to ensure DOM is ready
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);

@@ -1,5 +1,3 @@
-// Sidebar.jsx
-// import react, { useState } from 'react';
 import profile from "/src/assets/Ellipse 1476.png"
 import dashboardIcon from "/src/assets/StudentDashboard/icon1.png";
 import coursesIcon from "/src/assets/StudentDashboard/icon2.png";

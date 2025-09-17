@@ -1,12 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import course from "../../assets/Footer/Course.png";
 import Logo from "/src/assets/logo/NewLogo.png";
-import home from "../../assets/Footer/Home.png"
-import about from "../../assets/Footer/About.png"
-import contact from "../../assets/Footer/Contact.png"
-import blog from "../../assets/Footer/Blog.png"
+import home from "../../assets/Footer/Home.png";
+import about from "../../assets/Footer/About.png";
+import contact from "../../assets/Footer/Contact.png";
+import blog from "../../assets/Footer/Blog.png";
 import useTheme from "/src/Hooks/ThemeHook.js";
-
 
 function Footer() {
   const isDarkMode = useTheme();
@@ -18,38 +17,46 @@ function Footer() {
   const textColor = isDarkMode ? "text-gray-400" : "text-gray-800";
   const mutedText = isDarkMode ? "text-gray-400" : "text-gray-600";
   const hoverColor = "hover:text-orange-500";
-  const location = useLocation()
+  const location = useLocation();
+  const path = location.pathname;
 
- const picMap = {
-  "/": {
-    image: home,
-    text: `"Empower your learning journey with our curated courses. Discover new skills and grow at your own pace. Join thousands of learners achieving their goals."`,
-    className: "absolute -bottom-[105px] right-6 lg:w-[35%]"
-  },
-  "/about": {
-    image: about,
-    text: `"We make learning accessible and engaging for everyone. Our team is dedicated to helping you succeed. Be part of our growing community today."`,
-    className: "absolute -bottom-[75px] right-6 lg:w-[32%]"
-  },
-  "/course": {
-    image: course,
-    text: `"Explore courses designed to boost your skills and career. Learn from expert instructors and interactive lessons. Start your journey to mastery today."`,
-    className: "absolute bottom-0 right-6 lg:w-[38%]"
-  },
-  "/contact": {
-    image: contact,
-    text: `"Have questions or need support? We're here to help. Reach out via email or phone anytime. Your learning experience matters to us."`,
-    className: "absolute -bottom-[65px] right-6 lg:w-[30%]"
-  },
-  "/blog": {
-    image: blog,
-    text: `"Stay updated with insights, tips, and tutorials. Learn from industry experts and improve your skills. Subscribe to our newsletter for the latest posts"`,
-    className: "absolute -bottom-14 right-6 lg:w-[34%]"
+  const picMap = {
+    "/": {
+      image: home,
+      text: `"Empower your learning journey with our curated courses. Discover new skills and grow at your own pace. Join thousands of learners achieving their goals."`,
+      className: "absolute -bottom-[105px] right-6 lg:w-[35%]",
+    },
+    "/about": {
+      image: about,
+      text: `"We make learning accessible and engaging for everyone. Our team is dedicated to helping you succeed. Be part of our growing community today."`,
+      className: "absolute -bottom-[75px] right-6 lg:w-[32%]",
+    },
+    "/course": {
+      image: course,
+      text: `"Explore courses designed to boost your skills and career. Learn from expert instructors and interactive lessons. Start your journey to mastery today."`,
+      className: "absolute bottom-0 right-6 lg:w-[38%]",
+    },
+    "/contact": {
+      image: contact,
+      text: `"Have questions or need support? We're here to help. Reach out via email or phone anytime. Your learning experience matters to us."`,
+      className: "absolute -bottom-[65px] right-6 lg:w-[30%]",
+    },
+    "/blog": {
+      image: blog,
+      text: `"Stay updated with insights, tips, and tutorials. Learn from industry experts and improve your skills. Subscribe to our newsletter for the latest posts"`,
+      className: "absolute -bottom-14 right-6 lg:w-[34%]",
+    },
+  };
+
+  let { text, image, className } = picMap["/"];
+
+  if (picMap[path]) {
+    ({ text, image, className } = picMap[path]);
+  } else if (path.startsWith("/course/")) {
+    ({ text, image, className } = picMap["/course"]);
+  } else if (path.startsWith("/semesters/")) {
+    ({ text, image, className } = picMap["/course"]);
   }
-};
-
-
-  const { text, image } = picMap[location.pathname] || home
 
   return (
     <div className="relative z-20" style={backgroundStyle}>
@@ -58,13 +65,13 @@ function Footer() {
         <div className="hidden md:flex relative top-10 left-1/2 transform -translate-x-1/2 translate-y-[-50%] bg-gradient-to-r from-orange-500 to-orange-700 w-[90%] h-[180px] rounded-xl justify-between items-center px-6 md:px-10 z-30 shadow-xl">
           <h1
             className="text-white font-medium text-base md:text-lg max-w-xl leading-relaxed"
-            dangerouslySetInnerHTML={{__html:text}}
+            dangerouslySetInnerHTML={{ __html: text }}
           />
           <img
-  src={image}
-  alt="Illustration"
-  className={`hidden lg:block drop-shadow-lg ${picMap[location.pathname]?.className || "absolute bottom-0 right-6 lg:w-[35%]"}`}
-/>
+            src={image}
+            alt="Illustration"
+            className={`hidden lg:block drop-shadow-lg ${className}`}
+          />
         </div>
       </div>
       <div className="relative mt-10 lg:mt-0 pb-8 pl-5 md:px-20 z-10">
@@ -148,10 +155,11 @@ function Footer() {
           </div>
         </div>
         <div
-          className={`border-t mt-1 pt-4 flex flex-col md:flex-row justify-center md:justify-between items-center text-sm ${isDarkMode
-            ? "border-gray-700 text-gray-500"
-            : "border-gray-300 text-gray-500"
-            }`}
+          className={`border-t mt-1 pt-4 flex flex-col md:flex-row justify-center md:justify-between items-center text-sm ${
+            isDarkMode
+              ? "border-gray-700 text-gray-500"
+              : "border-gray-300 text-gray-500"
+          }`}
         >
           <span>&copy; 2025 Scopik. All rights reserved.</span>
           <a

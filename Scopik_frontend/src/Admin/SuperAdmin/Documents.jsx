@@ -101,8 +101,8 @@ function Documents({ onSuccess }) {
   const closeModal = () => {
     setModalVisible(false);
     if (modalMessage === "Resources added Successfully") {
-      setViewDocForm(false); // Close form
-      if (onSuccess) onSuccess(); // Go to next step
+      setViewDocForm(false);
+      if (onSuccess) onSuccess();
     }
   };
 

@@ -9,7 +9,7 @@ function Certificate() {
   const Uemail = localStorage.getItem("userEmail");
   const isDarkMode = useTheme();
 
-  const CERT_DOMAIN = "https://lmsdemo.thirdvizion.com"; // ? Fixed domain
+  const CERT_DOMAIN = "https://lmsdemo.thirdvizion.com"
 
   useEffect(() => {
     axios

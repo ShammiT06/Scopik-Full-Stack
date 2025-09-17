@@ -14,8 +14,6 @@ function SuperLogin() {
   const navigate = useNavigate();
 
   const { login, setLogin, setUserEmail, setUserName } = useContext(loginContext);
-
-  // Auto redirect if already logged in
   useEffect(() => {
     if (login) navigate("/superadmin");
   }, [login, navigate]);

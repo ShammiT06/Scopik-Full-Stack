@@ -1,4 +1,3 @@
-
 import image1 from "/src/assets/newImage/about1.png";
 import image2 from "/src/assets/newImage/about2.png";
 import image3 from "/src/assets/newImage/about3.png";

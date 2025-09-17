@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { BookOpen, ArrowRight } from "lucide-react"; // ? Lucide icons
+import { BookOpen, ArrowRight } from "lucide-react"
 
 export default function SemesterList() {
   const [semesters, setSemesters] = useState([]);
@@ -9,7 +9,6 @@ export default function SemesterList() {
   const [university, setUniversity] = useState("");
   const Uemail = localStorage.getItem("userEmail");
 
-  // 1?? Fetch department based on user email
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_STUDENT_PROGRESS}?email=${Uemail}`)
@@ -24,10 +23,9 @@ export default function SemesterList() {
 
   useEffect(() => {
     if (department) {
-      console.log("Fetching syllabus for department:", department);
       axios
         .get(
-          `https://lmsdemo.thirdvizion.com/api/getsyllabus/?department=${department}&university=${university}`
+          `${import.meta.env.VITE_GETSEM_DETAILS}/?department=${department}&university=${university}`
         )
         .then((res) => {
           setSemesters(res.data);

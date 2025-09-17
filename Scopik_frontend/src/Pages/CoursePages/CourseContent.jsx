@@ -37,7 +37,7 @@ export default function CourseContent() {
   const [quizChapterId, setQuizChapterId] = useState(null);
   const [currentMaterialIndex, setCurrentMaterialIndex] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  // Removed quizCompletedAndNextReady state since button is removed
+
 
   useEffect(() => {
     if (!Uemail || !CourseList?.length) return;
@@ -107,8 +107,6 @@ export default function CourseContent() {
 
   useEffect(() => {
     setScrollCompleted(false);
-    // Reset quiz completed state when material changes
-    // quizCompletedAndNextReady state removed
   }, [selectedMaterial]);
 
   const unlockNextChapter = async (index) => {
@@ -175,8 +173,6 @@ export default function CourseContent() {
   const totalChapters = courseData.length;
   const completedCount = completedChapters.length;
   const progressPercent = Math.round((completedCount / totalChapters) * 100);
-
-  // Function to navigate to the next chapter's content (still kept in case)
   const navigateToNextChapterContent = (completedChapterId) => {
     const idx = courseData.findIndex(
       (ch) => ch.id === completedChapterId
@@ -193,13 +189,11 @@ export default function CourseContent() {
         );
         setCurrentMaterialIndex(0);
       }
-      setMode("ppt"); // Switch back to PPT mode
-      setShowQuiz(false); // Hide the quiz
-      setScrollCompleted(false); // Reset scroll completion
-      // quizCompletedAndNextReady state removed
+      setMode("ppt"); 
+      setShowQuiz(false); 
+      setScrollCompleted(false); 
     } else {
       alert("All chapters completed!");
-      // Handle the case where all chapters are done
     }
   };
 
@@ -257,7 +251,7 @@ export default function CourseContent() {
                         setShowQuiz(false);
                         setScrollCompleted(false);
                         setSelectedMaterial(null);
-                        // quizCompletedAndNextReady reset removed
+                  
 
                         if (!isOpen && chapter.materials?.[0]) {
                           setSelectedMaterial(
@@ -323,7 +317,7 @@ export default function CourseContent() {
                               setMode("ppt");
                               setShowQuiz(false);
                               setScrollCompleted(false);
-                              // quizCompletedAndNextReady reset removed
+                           
                               setCurrentMaterialIndex(i);
                             }}
                           >
@@ -342,7 +336,7 @@ export default function CourseContent() {
                             if (scrollCompleted) {
                               setMode("quiz");
                               setQuizChapterId(selectedChapterId);
-                              // quizCompletedAndNextReady reset removed
+               
                             } else {
                               alert(
                                 "Please scroll the material fully to unlock the quiz."
@@ -443,7 +437,6 @@ export default function CourseContent() {
                         setScrollCompleted(false);
                         setShowQuiz(false);
                       } else {
-                        // If all materials are viewed, show the quiz
                         setMode("quiz");
                         setQuizChapterId(selectedChapterId);
                       }
@@ -465,11 +458,11 @@ export default function CourseContent() {
                   const idx = courseData.findIndex(
                     (ch) => ch.id === completedChapterId
                   );
-                  unlockNextChapter(idx); // Unlock the chapter
+                  unlockNextChapter(idx); 
 
                   const nextChapterIndex = idx + 1;
                   if (nextChapterIndex < Content.chapters.length) {
-                    // Automatically open next chapter content
+                 
                     const nextChapter = Content.chapters[nextChapterIndex];
                     setSelectedChapterId(nextChapter.id);
                     setQuizChapterId(nextChapter.id);
@@ -481,18 +474,14 @@ export default function CourseContent() {
                       setCurrentMaterialIndex(0);
                     }
 
-                    setMode("ppt"); // Switch to ppt mode
-                    setShowQuiz(false); // Hide quiz for next chapter
-                    setScrollCompleted(false); // Reset scroll state
-                    // Removed quizCompletedAndNextReady state
-                  } else {
-                    // Optional: handle course completion
-                  }
+                    setMode("ppt"); 
+                    setShowQuiz(false);
+                    setScrollCompleted(false); 
+                }
                 }}
                 userEmail={Uemail}
                 courseName={certificateName}
               />
-              {/* Removed Continue to Next Chapter button */}
             </div>
           )}
         </main>

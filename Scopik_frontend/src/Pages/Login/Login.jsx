@@ -63,7 +63,6 @@ const Login = () => {
 
       const data = await response.json();
       setSuccessMsg("Login Successful");
-      console.log(data)
 
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);

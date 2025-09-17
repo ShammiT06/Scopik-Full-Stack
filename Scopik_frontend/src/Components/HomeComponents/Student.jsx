@@ -17,7 +17,7 @@ const TestimonialCarousel = () => {
     axios.get(`${import.meta.env.VITE_STUDENT_REVIEW}`).then((res)=>{
       setTestimonials(res.data)
     }).catch((err)=>{
-      console.log("Error",err)
+      console.error("Error",err)
     })
 
   },[])

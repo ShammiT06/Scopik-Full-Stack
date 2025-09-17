@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -12,7 +11,7 @@ export default function SemesterDetail() {
   const [error, setError] = useState("");
   const userEmail = localStorage.getItem("userEmail");
 
-  // Fetch the student's department
+
   useEffect(() => {
     const fetchDepartment = async () => {
       try {
@@ -33,19 +32,15 @@ export default function SemesterDetail() {
       setError("User email not found.");
     }
   }, [userEmail]);
-
-  // Fetch semester details after department is available
   useEffect(() => {
     const fetchSemester = async () => {
       try {
         const res = await axios.get(
-          `https://lmsdemo.thirdvizion.com/api/getsyllabus/?department=${department}&university=${university}`
+          `${import.meta.env.VITE_GETSEM_DETAILS}?department=${department}&university=${university}`
         );
-
         const matchedSemester = res.data.find(
           (s) => s.id.toString() === id.toString()
         );
-
         if (matchedSemester) {
           setSemester(matchedSemester);
         } else {
@@ -58,13 +53,11 @@ export default function SemesterDetail() {
         setLoading(false);
       }
     };
-
     if (department) {
       fetchSemester();
     }
-  }, [department, id]);
+  }, [department, id])
 
-  // Render states
   if (loading) {
     return (
       <div className="text-center mt-10 text-gray-500 dark:text-gray-300">
@@ -82,7 +75,7 @@ export default function SemesterDetail() {
   }
 
   if (!semester) {
-    return null; // Shouldn't happen, handled by error state
+    return null;
   }
 
   return (
@@ -103,20 +96,42 @@ export default function SemesterDetail() {
           </p>
         )}
 
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold text-blue-700 dark:text-orange-400 mb-2">
-            Subjects
-          </h2>
-          {semester.subjects && semester.subjects.length > 0 ? (
-            <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-              {semester.subjects.map((subject, index) => (
-                <li key={index}>{subject}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500 dark:text-gray-400">No subjects listed.</p>
-          )}
+ <div className="mt-6">
+  <h2 className="text-xl font-semibold text-blue-700 dark:text-orange-400 mb-4">
+    Subjects
+  </h2>
+
+  {semester.subjects && semester.subjects.length > 0 ? (
+    <div className="grid gap-6 md:grid-cols-2">
+      {semester.subjects.map((subject, index) => (
+        <div
+          key={index}
+          className="bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300"
+        >
+          <div className="h-40 bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+            <img
+              src={`https://via.placeholder.com/400x200?text=${subject}`}
+              alt={subject}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="p-4">
+            <h3 className="text-lg font-bold text-blue-700 dark:text-orange-400 mb-2">
+              {subject}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              This course will cover the fundamentals of <b>{subject}</b>. You’ll
+              learn concepts, practical applications, and gain knowledge
+              necessary for your semester.
+            </p>
+          </div>
         </div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-500 dark:text-gray-400">No subjects listed.</p>
+  )}
+</div>
       </div>
     </div>
   );

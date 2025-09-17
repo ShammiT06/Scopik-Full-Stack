@@ -26,10 +26,9 @@ function Teacherhome() {
         },
       })
       .then((res) => {
-        console.log(res.data)
         setTeacherName(res.data.teacher_name);
         setTeacheremail(res.data.teacher_email);
-        setTeacherPhoto(res.data.teacher_img); // Get profile photo
+        setTeacherPhoto(res.data.teacher_img)
         setCourse(res.data.total_courses);
         setTotal(res.data.total_students);
         setFirst(res.data.first_year_students);

@@ -227,19 +227,6 @@ function CertificateTemplate() {
                 )}
               </div>
               <div className="flex gap-5">
-                {/* <button
-                  onClick={() => {
-                    setEditingTemplate(temp);
-                    setEditCourse(temp.course || "");
-                    setEditDefault(!!temp.is_default);
-                    setEditFile(null); // Reset file input
-                    setEditModal(true);
-                  }}
-                  className="mt-2 w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                >
-                  Edit
-                </button> */}
-
                 <button
                   onClick={() => {
                     setTemplateToDelete(temp);
@@ -258,8 +245,6 @@ function CertificateTemplate() {
           </p>
         )}
       </div>
-
-      {/* Upload/Success Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -308,7 +293,6 @@ function CertificateTemplate() {
         </div>
       )}
 
-      {/* Edit Modal */}
       {editModal && editingTemplate && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">

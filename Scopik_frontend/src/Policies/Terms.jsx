@@ -15,13 +15,6 @@ export default function TermsAndConditions() {
                         >
                             Terms & Conditions
                         </h1>
-                        {/* Toggle */}
-                        {/* <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="px-4 py-2 bg-white text-purple-600 rounded-lg shadow hover:bg-gray-200 transition"
-            >
-              {darkMode ? "☀️ Light" : "🌙 Dark"}
-            </button> */}
                     </div>
                 </section>
 
