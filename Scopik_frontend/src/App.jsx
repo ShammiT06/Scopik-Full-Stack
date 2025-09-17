@@ -54,9 +54,12 @@ function App() {
       .get(import.meta.env.VITE_Course_name, {
         headers: { Authorization: `Basic ${token}` },
       })
-      .then((res) => setCourse(res.data))
+      .then((res) => 
+        setCourse(res.data))
       .catch((error) => console.error("There is an Error:", error));
   }, []);
+
+  
 
   useEffect(() => {
     const storedToken = localStorage.getItem("access_token");

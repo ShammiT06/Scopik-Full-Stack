@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { CourseContext } from "/src/App";
@@ -38,7 +38,6 @@ export default function CourseContent() {
   const [currentMaterialIndex, setCurrentMaterialIndex] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-
   useEffect(() => {
     if (!Uemail || !CourseList?.length) return;
 
@@ -49,22 +48,42 @@ export default function CourseContent() {
 
     if (selectedCourse) {
       setCertificateName(selectedCourse.name);
+
+      // merge PDFs and Videos into one materials array
       const formattedChapters = selectedCourse.chapters.map(
-        (chapter, index) => ({
-          title: chapter.title,
-          id: chapter.id,
-          index,
-        })
+        (chapter, index) => {
+          const pdfs =
+            chapter.materials?.map((m) => ({
+              type: "pdf",
+              url: m.material.replace(/^http:/, "https:"),
+              name: m.material_name,
+            })) || [];
+
+          const vids =
+            chapter.videos?.map((v) => ({
+              type: "video",
+              url: v.video.replace(/^http:/, "https:"),
+              name: v.video_name,
+            })) || [];
+
+          return {
+            title: chapter.title,
+            id: chapter.id,
+            index,
+            materials: [...pdfs, ...vids],
+          };
+        }
       );
+
       setCourseData(formattedChapters);
 
-      const firstUnlockedChapter = selectedCourse.chapters[0];
+      const firstUnlockedChapter = formattedChapters[0];
       if (firstUnlockedChapter) {
         setSelectedChapterId(firstUnlockedChapter.id);
-        const firstMaterial = firstUnlockedChapter.materials?.[0]?.material;
+        const firstMaterial = firstUnlockedChapter.materials?.[0];
         if (firstMaterial) {
-          setSelectedMaterial(firstMaterial.replace(/^http:/, "https:"));
-          setMode("ppt");
+          setSelectedMaterial(firstMaterial);
+          setMode(firstMaterial.type);
           setCurrentMaterialIndex(0);
         }
       }
@@ -145,14 +164,10 @@ export default function CourseContent() {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     const atBottom = scrollTop + clientHeight >= scrollHeight - 5;
 
-    const chapter = Content?.chapters?.find(
-      (ch) => ch.id === selectedChapterId
-    );
+    const chapter = courseData.find((ch) => ch.id === selectedChapterId);
     const isLastMaterial =
-      chapter?.materials?.[chapter.materials.length - 1]?.material.replace(
-        /^http:/,
-        "https:"
-      ) === selectedMaterial;
+      chapter?.materials?.[chapter.materials.length - 1]?.url ===
+      selectedMaterial?.url;
 
     if (atBottom && selectedChapterId !== null && isLastMaterial) {
       setScrollCompleted(true);
@@ -173,34 +188,55 @@ export default function CourseContent() {
   const totalChapters = courseData.length;
   const completedCount = completedChapters.length;
   const progressPercent = Math.round((completedCount / totalChapters) * 100);
-  const navigateToNextChapterContent = (completedChapterId) => {
-    const idx = courseData.findIndex(
-      (ch) => ch.id === completedChapterId
-    );
-    const nextChapterIndex = idx + 1;
 
-    if (nextChapterIndex < Content.chapters.length) {
-      const nextChapter = Content.chapters[nextChapterIndex];
-      setSelectedChapterId(nextChapter.id);
-      setQuizChapterId(nextChapter.id);
-      if (nextChapter.materials?.[0]) {
-        setSelectedMaterial(
-          nextChapter.materials[0].material.replace(/^http:/, "https:")
-        );
-        setCurrentMaterialIndex(0);
-      }
-      setMode("ppt"); 
-      setShowQuiz(false); 
-      setScrollCompleted(false); 
-    } else {
-      alert("All chapters completed!");
+  // helper to render pdf/video
+  const renderMaterial = (mat) => {
+    if (!mat) return null;
+
+    if (mat.type === "pdf") {
+      return (
+        <iframe
+          key={mat.url}
+          src={`https://docs.google.com/gview?url=${encodeURIComponent(
+            mat.url
+          )}&embedded=true`}
+          style={{ width: "100%", height: "1500px" }}
+          frameBorder="0"
+          title="PDF Viewer"
+        />
+      );
+    } else if (mat.type === "video") {
+      return (
+        <video
+          key={mat.url}
+          src={mat.url}
+          controls
+          style={{ width: "100%", height: "auto" }}
+          onTimeUpdate={(e) => {
+            const video = e.target;
+            const progress = (video.currentTime / video.duration) * 100;
+
+            const chapter = courseData.find((ch) => ch.id === selectedChapterId);
+            const isLastMaterial =
+              chapter?.materials?.[chapter.materials.length - 1]?.url ===
+              selectedMaterial?.url;
+
+            if (progress >= 90 && selectedChapterId !== null && isLastMaterial) {
+              setScrollCompleted(true);
+              setShowQuiz(true);
+            }
+          }}
+        />
+      );
     }
+    return <div>Unsupported file type</div>;
   };
 
   return (
     <>
       <Header />
       <div className="flex bg-white text-white min-h-screen">
+        {/* Sidebar */}
         <aside
           className={`${isSidebarOpen ? "w-96" : "w-20"} ${
             isDarkMode ? "bg-black" : "bg-white"
@@ -228,7 +264,7 @@ export default function CourseContent() {
               </button>
             </div>
 
-            {Content?.chapters?.map((chapter, index) => {
+            {courseData.map((chapter, index) => {
               const isUnlocked = unlockedChapters.includes(index);
               const isOpen = selectedChapterId === chapter.id;
 
@@ -251,16 +287,10 @@ export default function CourseContent() {
                         setShowQuiz(false);
                         setScrollCompleted(false);
                         setSelectedMaterial(null);
-                  
 
                         if (!isOpen && chapter.materials?.[0]) {
-                          setSelectedMaterial(
-                            chapter.materials[0].material.replace(
-                              /^http:/,
-                              "https:"
-                            )
-                          );
-                          setMode("ppt");
+                          setSelectedMaterial(chapter.materials[0]);
+                          setMode(chapter.materials[0].type);
                           setCurrentMaterialIndex(0);
                         }
                       }
@@ -305,24 +335,20 @@ export default function CourseContent() {
                           <div
                             key={i}
                             className={`cursor-pointer mb-1 px-3 py-1 rounded-r transition-all duration-200 flex items-center ${
-                              selectedMaterial ===
-                              mat.material.replace(/^http:/, "https:")
+                              selectedMaterial?.url === mat.url
                                 ? "bg-orange-500 text-white border-l-4 border-orange-700"
                                 : "text-black hover:text-orange-400"
                             } ${isDarkMode ? "text-white" : "text-black"}`}
                             onClick={() => {
-                              setSelectedMaterial(
-                                mat.material.replace(/^http:/, "https:")
-                              );
-                              setMode("ppt");
+                              setSelectedMaterial(mat);
+                              setMode(mat.type);
                               setShowQuiz(false);
                               setScrollCompleted(false);
-                           
                               setCurrentMaterialIndex(i);
                             }}
                           >
                             <FileText className="w-4 h-4 mr-2" />
-                            {mat.material_name}
+                            {mat.name}
                           </div>
                         ))}
 
@@ -336,10 +362,9 @@ export default function CourseContent() {
                             if (scrollCompleted) {
                               setMode("quiz");
                               setQuizChapterId(selectedChapterId);
-               
                             } else {
                               alert(
-                                "Please scroll the material fully to unlock the quiz."
+                                "Please scroll/watch fully to unlock the quiz."
                               );
                             }
                           }}
@@ -379,6 +404,7 @@ export default function CourseContent() {
           </div>
         </aside>
 
+        {/* Main content */}
         <main
           className={`flex flex-col h-screen transition-all duration-300 ease-in-out overflow-hidden ${
             isDarkMode ? "bg-black" : "bg-white"
@@ -388,7 +414,7 @@ export default function CourseContent() {
               : "ml-20 w-[calc(100%-5rem)]"
           }`}
         >
-          {mode === "ppt" && (
+          {(mode === "pdf" || mode === "video") && (
             <>
               <div
                 className={`flex-1 w-full overflow-y-auto rounded shadow-lg border border-zinc-700 transition-opacity duration-500 ${
@@ -397,15 +423,7 @@ export default function CourseContent() {
                 onScroll={handleScroll}
               >
                 {selectedMaterial ? (
-                  <iframe
-                    key={selectedMaterial}
-                    src={`https://docs.google.com/gview?url=${encodeURIComponent(
-                      selectedMaterial
-                    )}&embedded=true`}
-                    style={{ width: "100%", height: "1500px" }}
-                    frameBorder="0"
-                    title="Material Viewer"
-                  />
+                  renderMaterial(selectedMaterial)
                 ) : (
                   <div
                     className={`text-center ${
@@ -417,22 +435,20 @@ export default function CourseContent() {
                 )}
               </div>
 
-              {/* Keep the "Show Next" button for materials navigation */}
               {scrollCompleted && (
                 <div className="mt-4 flex justify-end">
                   <button
                     className="bg-orange-500 text-white px-10 py-2 mr-5 mb-5 rounded hover:bg-orange-600"
                     onClick={() => {
-                      const chapter = Content?.chapters?.find(
+                      const chapter = courseData.find(
                         (ch) => ch.id === selectedChapterId
                       );
                       const nextIndex = currentMaterialIndex + 1;
 
                       if (chapter && nextIndex < chapter.materials.length) {
                         const nextMaterial = chapter.materials[nextIndex];
-                        setSelectedMaterial(
-                          nextMaterial.material.replace(/^http:/, "https:")
-                        );
+                        setSelectedMaterial(nextMaterial);
+                        setMode(nextMaterial.type);
                         setCurrentMaterialIndex(nextIndex);
                         setScrollCompleted(false);
                         setShowQuiz(false);
@@ -458,26 +474,23 @@ export default function CourseContent() {
                   const idx = courseData.findIndex(
                     (ch) => ch.id === completedChapterId
                   );
-                  unlockNextChapter(idx); 
+                  unlockNextChapter(idx);
 
                   const nextChapterIndex = idx + 1;
                   if (nextChapterIndex < Content.chapters.length) {
-                 
-                    const nextChapter = Content.chapters[nextChapterIndex];
+                    const nextChapter = courseData[nextChapterIndex];
                     setSelectedChapterId(nextChapter.id);
                     setQuizChapterId(nextChapter.id);
 
                     if (nextChapter.materials?.[0]) {
-                      setSelectedMaterial(
-                        nextChapter.materials[0].material.replace(/^http:/, "https:")
-                      );
+                      setSelectedMaterial(nextChapter.materials[0]);
                       setCurrentMaterialIndex(0);
+                      setMode(nextChapter.materials[0].type);
                     }
 
-                    setMode("ppt"); 
                     setShowQuiz(false);
-                    setScrollCompleted(false); 
-                }
+                    setScrollCompleted(false);
+                  }
                 }}
                 userEmail={Uemail}
                 courseName={certificateName}
