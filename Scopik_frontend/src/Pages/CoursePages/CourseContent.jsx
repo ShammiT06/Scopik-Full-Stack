@@ -200,7 +200,7 @@ export default function CourseContent() {
           src={`https://docs.google.com/gview?url=${encodeURIComponent(
             mat.url
           )}&embedded=true`}
-          style={{ width: "100%", height: "1500px" }}
+          style={{ width: "100%", height: "1500px", marginTop:"50px" }}
           frameBorder="0"
           title="PDF Viewer"
         />
@@ -211,7 +211,7 @@ export default function CourseContent() {
           key={mat.url}
           src={mat.url}
           controls
-          style={{ width: "100%", height: "auto" }}
+          style={{ width: "100%", height: "auto",marginTop:"65px"}}
           onTimeUpdate={(e) => {
             const video = e.target;
             const progress = (video.currentTime / video.duration) * 100;

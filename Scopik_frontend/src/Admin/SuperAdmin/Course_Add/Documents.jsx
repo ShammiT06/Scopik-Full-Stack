@@ -7,18 +7,44 @@ function Documents({ onSuccess }) {
   const [uploadvideo, setUploadVideo] = useState(false);
   const [content, setContent] = useState(false);
   const [text, setText] = useState("");
+const [selectedCourse, setSelectedCourse] = useState("");
   const [value, setValue] = useState("");
-  const [course, setCourse] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [chapterName, setChapterName] = useState("");
   const [video, setVideo] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [chapters, setChapters] = useState([]); 
 
   const username=import.meta.env.VITE_USER_NAME
   const password= import.meta.env.VITE_USER_PASS
 
   const token = btoa(`${username}:${password}`);
+
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_Course_name, {
+        headers: { Authorization: `Basic ${token}` },
+      })
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setCourses(res.data);
+        } else {
+          console.error("Expected array, received:", res.data);
+          setCourses([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setCourses([]);
+      });
+  }, []);
+
+  useEffect(() => {
+  const course = courses.find((c) => String(c.id) === String(selectedCourse));
+  setChapters(course?.chapters || []);
+}, [selectedCourse, courses]);
 
   useEffect(() => {
     axios
@@ -96,7 +122,7 @@ function Documents({ onSuccess }) {
   const closeModal = () => {
     setModalVisible(false);
     if (modalMessage.includes("successfully")) {
-      if (onSuccess) onSuccess();
+      if (onSuccess) onSuccess(); 
     }
   };
 
@@ -122,32 +148,55 @@ function Documents({ onSuccess }) {
 
       <div className="space-y-5">
         <div className="flex flex-col">
-          <label className="text-gray-800 font-medium mb-1  dark:text-white">Select Chapter</label>
-          <select
-            value={chapterName}
-            onChange={(e) => setChapterName(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white"
-          >
-            <option value="">-- Choose a Chapter --</option>
-            {course.flatMap((courseItem) =>
-              courseItem.chapters?.map((ch) => (
-                <option key={ch.id} value={ch.title}>
-                  {ch.title}
-                </option>
-              ))
-            )}
-          </select>
-        </div>
+  <label className="text-gray-800 font-medium mb-1 dark:text-white">
+    Select Course
+  </label>
+  <select
+  className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white"
+  value={selectedCourse}
+  onChange={(e) => setSelectedCourse(e.target.value)}
+>
+  <option value="">-- Select Course --</option>
+  {courses.map((course) => (
+    <option key={course.id} value={course.id}>
+      {course.name}
+    </option>
+  ))}
+</select>
+</div>
+
+
+      {/* Select Chapter (from fetched chapters) */}
+<div className="flex flex-col">
+  <label className="text-gray-800 font-medium mb-1 dark:text-white">
+    Select Chapter
+  </label>
+  <select
+  value={chapterName}
+  onChange={(e) => setChapterName(e.target.value)}
+  disabled={!selectedCourse}
+  className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white"
+>
+  <option value="">-- Choose a Chapter --</option>
+  {chapters.map((ch) => (
+    <option key={ch.id} value={ch.title}>
+      {ch.title}
+    </option>
+  ))}
+</select>
+</div>
+
         <div className="flex flex-col">
           <label className="text-gray-800 font-medium mb-1  dark:text-white">Content Name</label>
           <input
             type="text"
-            placeholder="Enter content name"
+            placeholder="-- Enter content name --"
             value={text}
             onChange={(e) => setText(e.target.value)}
             className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white"
           />
         </div>
+
         <div className="flex flex-col">
           <label className="text-gray-800 font-medium mb-1  dark:text-white">Content Type</label>
           <div className="flex flex-wrap gap-5">
@@ -177,6 +226,7 @@ function Documents({ onSuccess }) {
             </label>
           </div>
         </div>
+
         {materials && (
           <div className="flex flex-col">
             <label className="text-gray-800 font-medium mb-1">Upload Document (PDF/DOCX/PPT)</label>
@@ -188,6 +238,7 @@ function Documents({ onSuccess }) {
             />
           </div>
         )}
+
         {uploadvideo && (
           <div className="flex flex-col">
             <label className="text-gray-800 font-medium mb-1">Upload Video (MP4)</label>
@@ -199,6 +250,7 @@ function Documents({ onSuccess }) {
             />
           </div>
         )}
+
         {content && (
           <div className="flex flex-col">
             <label className="text-gray-800 font-medium mb-1">Text Content</label>
@@ -211,9 +263,11 @@ function Documents({ onSuccess }) {
             />
           </div>
         )}
+
         {isUploading && (
           <div className="text-blue-600 font-medium">Uploading Please Wait...</div>
         )}
+
         {!isUploading && (
           <div className="flex justify-end">
             <button

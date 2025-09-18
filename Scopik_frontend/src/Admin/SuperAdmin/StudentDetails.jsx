@@ -5,6 +5,7 @@ import * as XLSX from "xlsx";
 function Student_details() {
   const [studentDetails, setStudentDetails] = useState([]);
   const [search, setSearch] = useState("");
+  const [expandedRows, setExpandedRows] = useState({}); // track expanded rows
 
   useEffect(() => {
     fetchStudents();
@@ -55,6 +56,14 @@ function Student_details() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Overall Report");
     XLSX.writeFile(workbook, "Overall_Data.csv", { bookType: "csv" });
+  }
+
+  // toggle expand/collapse
+  function toggleExpand(index) {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   }
 
   return (
@@ -109,58 +118,82 @@ function Student_details() {
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.map((item, index) => (
-              <tr
-                key={index}
-                className={`${
-                  index % 2 === 0
-                    ? "bg-white dark:bg-gray-800"
-                    : "bg-gray-100 dark:bg-gray-700"
-                } hover:bg-blue-50 dark:hover:bg-gray-600 transition`}
-              >
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {index + 1}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.name}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.email}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.department || "Student by Scopik"}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.registerno || "Student By Scopik"}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.university}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.academic_year || "Student By Scopik"}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.phone_number}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.courses && item.courses.length > 0
-                    ? item.courses.map((c) => c.course_name).join(", ")
-                    : "Course Not Enrolled"}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.payments && item.payments.length > 0
-                    ? item.payments.some((c) => c.status === true)
-                      ? "Success"
-                      : "Assigned By University"
-                    : "Payment Not Done"}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
-                  {item.payments && item.payments.length > 0
-                    ? item.payments.map((c) => c.payment_date.split("T")[0]).join(", ")
-                    : "—"}
-                </td>
-              </tr>
-            ))}
+            {filteredStudents.map((item, index) => {
+              const courses =
+                item.courses && item.courses.length > 0
+                  ? item.courses.map((c) => c.course_name)
+                  : [];
+              const isExpanded = expandedRows[index];
+
+              return (
+                <tr
+                  key={index}
+                  className={`${
+                    index % 2 === 0
+                      ? "bg-white dark:bg-gray-800"
+                      : "bg-gray-100 dark:bg-gray-700"
+                  } hover:bg-blue-50 dark:hover:bg-gray-600 transition`}
+                >
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.name}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.email}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.department || "Student by Scopik"}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.registerno || "Student By Scopik"}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.university}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.academic_year || "Student By Scopik"}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.phone_number}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {courses.length === 0 ? (
+                      "Course Not Enrolled"
+                    ) : (
+                      <>
+                        {isExpanded
+                          ? courses.join(", ")
+                          : courses.slice(0, 2).join(", ")}
+                        {courses.length > 2 && (
+                          <button
+                            onClick={() => toggleExpand(index)}
+                            className="ml-2 text-blue-600 dark:text-orange-400 underline"
+                          >
+                            {isExpanded ? "Read less" : "Read more"}
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.payments && item.payments.length > 0
+                      ? item.payments.some((c) => c.status === true)
+                        ? "Success"
+                        : "Assigned By University"
+                      : "Payment Not Done"}
+                  </td>
+                  <td className="px-4 py-3 text-center text-gray-900 dark:text-gray-200">
+                    {item.payments && item.payments.length > 0
+                      ? item.payments
+                          .map((c) => c.payment_date.split("T")[0])
+                          .join(", ")
+                      : "—"}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
