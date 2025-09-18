@@ -140,7 +140,7 @@ function Super() {
         {/* Floating Button for Mobile & Tab */}
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="fixed top-[70px] left-2 p-2 rounded-md pt-2 bg-blue-500 text-white shadow-lg lg:hidden z-50 "
+          className="fixed top-[70px] left-2 p-2 rounded-md pt-2 bg-blue-500 text-white shadow-lg lg:hidden z-30 "
         >
           {isMobileOpen ? <HiX size={24} /> : <HiMenu size={24} />}
         </button>

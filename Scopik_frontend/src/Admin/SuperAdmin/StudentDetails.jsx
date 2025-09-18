@@ -68,28 +68,28 @@ function Student_details() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 rounded-lg">
-      <div className="flex items-center justify-between mb-6">
-        {/* Heading */}
-        <h1 className="text-3xl font-bold text-blue-700 dark:text-orange-400">
-          Students Report
-        </h1>
+   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+  {/* Heading */}
+  <h1 className="text-2xl sm:text-3xl font-bold text-blue-700 dark:text-orange-400">
+    Students Report
+  </h1>
 
-        <div className="flex gap-4">
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md shadow transition"
-            onClick={Reportdownload}
-          >
-            Export Report
-          </button>
-          <input
-            type="text"
-            className="border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 w-72 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
-            placeholder="Search students..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
+  <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+    <button
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow transition w-full sm:w-auto"
+      onClick={Reportdownload}
+    >
+      Export Report
+    </button>
+    <input
+      type="text"
+      className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+      placeholder="Search students..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+  </div>
+</div>
 
       <div className="overflow-x-auto shadow-md rounded-lg">
         <table className="min-w-full text-sm border border-gray-300 dark:border-gray-700">
