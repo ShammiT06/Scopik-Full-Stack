@@ -108,7 +108,7 @@ function Header() {
 
       {/* Desktop Menu */}
       <div
-        className={`hidden lg:flex gap-14 font-manrope md:text-md lg:text-xl xl:text-2xl transition ${
+        className={`hidden lg:flex gap-14 font-manrope md:text-md lg:text-xl xl:text-[22px] transition ${
           isHome && !bgChange ? "text-white" : "text-gray-800 dark:text-white"
         }`}
       >

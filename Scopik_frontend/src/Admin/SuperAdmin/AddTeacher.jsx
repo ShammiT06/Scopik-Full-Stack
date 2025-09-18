@@ -494,7 +494,7 @@ function AddTeacher() {
               />
               <input
                 type="email"
-                value={email}
+                value={email.toLowerCase()}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email ID"
                 className={inputStyle}
