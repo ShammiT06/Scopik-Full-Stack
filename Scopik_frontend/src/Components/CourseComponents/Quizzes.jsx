@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CourseContext } from "/src/App";
+
 export default function Quizzes({ chapterId, onNextChapter, userEmail, courseName }) {
   const { Course } = useContext(CourseContext);
   const [quizzes, setQuizzes] = useState([]);
@@ -15,8 +16,8 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
   const [review, setReview] = useState("");
   const [chapterMarkedComplete, setChapterMarkedComplete] = useState(false);
   const [certificateDownloaded, setCertificateDownloaded] = useState(false);
-  const [showCompletionModal, setShowCompletionModal] = useState(false); 
-  const [showGeneratingModal, setShowGeneratingModal] = useState(false); 
+  const [showCompletionModal, setShowCompletionModal] = useState(false); // ? Completion modal state
+  const [showGeneratingModal, setShowGeneratingModal] = useState(false); // ? Certificate generating modal state
 
   const navigate = useNavigate();
   const certificateKey = `certificateDownloaded_${userEmail}_${courseName}`;
@@ -117,20 +118,20 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
 
   const handlecomplete = () => {
     axios
-      .post(import.meta.env.VITE_COMPLETED_STATUS, {
+      .post("https://lmsdemo.thirdvizion.com/api/coursecompletestatus/", {
         email: userEmail,
         course: courseName,
       })
       .then(() => {
-        setShowCompletionModal(true); 
+        setShowCompletionModal(true); // ? Open completion modal
         setChapterMarkedComplete(true);
-        localStorage.setItem(completionKey, "true")
+        localStorage.setItem(completionKey, "true");
 
         if (onNextChapter) {
           onNextChapter(chapterId);
         }
       })
-      .catch((err) => console.error("Error", err))
+      .catch((err) => console.log("Error", err));
   };
 
   const handleCertificateRedirect = async () => {
@@ -139,7 +140,7 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
       return;
     }
 
-    setShowGeneratingModal(true)
+    setShowGeneratingModal(true); // Show generating modal on start
 
     try {
       const feedbackPayload = {
@@ -148,7 +149,7 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
         feed: review,
       };
 
-      const feedbackRes = await axios.post(import.meta.env.VITE_STUDENT_FEEDBACK, feedbackPayload);
+      const feedbackRes = await axios.post("https://lmsdemo.thirdvizion.com/api/getfeedback/", feedbackPayload);
 
       if (feedbackRes.status === 200 || feedbackRes.status === 201) {
         await axios.post(import.meta.env.VITE_CREATE_CERTIFICATE, {
@@ -159,14 +160,14 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
         localStorage.setItem(certificateKey, "true");
         localStorage.setItem("completedCourseName", courseName);
         setCertificateDownloaded(true);
-        setShowGeneratingModal(false); 
+        setShowGeneratingModal(false); // Hide modal before redirect
         navigate("/certificate");
       } else {
-        setShowGeneratingModal(false); 
+        setShowGeneratingModal(false); // Hide modal on failure
         alert("Feedback submission failed. Try again.");
       }
     } catch (error) {
-      setShowGeneratingModal(false)
+      setShowGeneratingModal(false); // Hide modal on error
       console.error("Error in certificate flow:", error);
       alert("Something went wrong while generating the certificate.");
     }
@@ -174,7 +175,7 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
 
   const needsRestart = showResult && score < quizzes.length;
   const showReviewInstead =
-  showResult && score === quizzes.length && isLastChapter && allChaptersCompleted && chapterMarkedComplete;
+    showResult && score === quizzes.length && isLastChapter && allChaptersCompleted && chapterMarkedComplete;
 
   return (
     <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-white dark:bg-black rounded-lg shadow border border-zinc-700 text-white overflow-y-auto max-h-[calc(100vh-100px)]">
@@ -315,6 +316,7 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
           )}
         </>
       )}
+
       {/* ? Completion Modal */}
       {showCompletionModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -330,6 +332,7 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
           </div>
         </div>
       )}
+
       {/* ? Certificate Generating Modal */}
       {showGeneratingModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -343,3 +346,4 @@ export default function Quizzes({ chapterId, onNextChapter, userEmail, courseNam
     </div>
   );
 }
+

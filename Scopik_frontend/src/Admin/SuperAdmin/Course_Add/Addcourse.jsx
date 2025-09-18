@@ -20,8 +20,8 @@ function CourseList({ onSuccess }) {
   const [successMessage, setSuccessMessage] = useState("");
 
 
-  const username=import.meta.env.VITE_USER_NAME
-  const password= import.meta.env.VITE_USER_PASS
+  const username = import.meta.env.VITE_USER_NAME
+  const password = import.meta.env.VITE_USER_PASS
 
   const token = btoa(`${username}:${password}`);
 
@@ -35,8 +35,8 @@ function CourseList({ onSuccess }) {
 
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset",import.meta.env.VITE_CLOUD_PRESET);
-    data.append("cloud_name",import.meta.env.VITE_CLOUD_NAME);
+    data.append("upload_preset", import.meta.env.VITE_CLOUD_PRESET);
+    data.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
 
     if (key === "Image") setUploadingCardImage(true);
     if (key === "BackgroundImage") setUploadingCourseImage(true);
@@ -161,11 +161,50 @@ function CourseList({ onSuccess }) {
             ))}
           </select>
         </div>
-        <InputField label="Course Name" value={courseName} onChange={setCourseName} placeholder="Enter course name" required />
-        <InputField label="Description" value={courseDesc} onChange={setCourseDesc} placeholder="Enter course description" textarea required />
-        <InputField label="Total Chapters" value={chapter} onChange={setChapter} placeholder="Ex: 10" required />
-        <InputField label="Duration" value={duration} onChange={setDuration} placeholder="Ex: 4 weeks" required />
-        <InputField label="Price" value={price} onChange={setPrice} placeholder="Ex: 499" required />
+        <InputField
+          label="Course Name"
+          value={courseName}
+          onChange={setCourseName}
+          placeholder="Enter course name"
+          required
+        />
+
+        <InputField
+          label="Description"
+          value={courseDesc}
+          onChange={setCourseDesc}
+          placeholder="Enter course description"
+          textarea
+          required
+        />
+
+        <InputField
+          label="Total Chapters"
+          value={chapter}
+          onChange={setChapter}
+          placeholder="Ex: 10"
+          type="number" // 👈 number input
+          required
+        />
+
+        <InputField
+          label="Duration"
+          value={duration}
+          onChange={setDuration}
+          placeholder="Ex: 4 weeks"
+          type="number"
+          required
+        />
+
+        <InputField
+          label="Price"
+          value={price}
+          onChange={setPrice}
+          placeholder="Ex: 499"
+          type="number" 
+          required
+        />
+
         <ImageUpload
           title="Card Image"
           resolution="480x400"
@@ -185,11 +224,10 @@ function CourseList({ onSuccess }) {
         <button
           onClick={handleSubmit}
           disabled={!isFormComplete}
-          className={`w-full px-5 py-3 rounded-lg text-lg font-semibold transition ${
-            isFormComplete
+          className={`w-full px-5 py-3 rounded-lg text-lg font-semibold transition ${isFormComplete
               ? "bg-[#084D90] text-white hover:bg-blue-800"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
-          }`}
+            }`}
         >
           Submit Course
         </button>
@@ -198,7 +236,15 @@ function CourseList({ onSuccess }) {
   );
 }
 
-function InputField({ label, value, onChange, placeholder, textarea = false, required = false }) {
+function InputField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  textarea = false,
+  required = false,
+  type = "text", // 👈 default type is text
+}) {
   return (
     <div>
       <label className="block text-gray-700 font-semibold mb-1 dark:text-white">
@@ -211,21 +257,22 @@ function InputField({ label, value, onChange, placeholder, textarea = false, req
           placeholder={placeholder}
           className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
           rows={4}
-          required
+          required={required}
         />
       ) : (
         <input
-          type="text"
+          type={type} // 👈 dynamic type
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
-          required
+          required={required}
         />
       )}
     </div>
   );
 }
+
 
 function ImageUpload({ title, resolution, uploading, imageUrl, onUpload, required = false }) {
   return (

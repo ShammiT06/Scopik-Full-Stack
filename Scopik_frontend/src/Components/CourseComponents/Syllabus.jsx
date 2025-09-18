@@ -14,6 +14,8 @@ function Syllabus() {
   const selectedCourse = Course.find((c) => c.id === Number(id));
   const chapters = selectedCourse?.chapters || [];
 
+  console.log(Course);
+
   const toggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -75,30 +77,38 @@ function Syllabus() {
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}
                   >
-                    {chapter.materials && chapter.materials.length > 0 ? (
+                    {/* Materials */}
+                    {chapter.materials && chapter.materials.length > 0 &&
                       chapter.materials.map((material) => (
-                        <li
-                          key={material.id}
-                          className="flex items-center gap-2"
-                        >
-                          <p>{material.material_name}</p>
+                        <li key={material.id} className="flex items-center gap-2">
+                          <p>📄 {material.material_name}</p>
                         </li>
-                      ))
-                    ) : (
-                      <li
-                        className={`italic ${
-                          isDarkMode ? "text-gray-500" : "text-gray-400"
-                        }`}
-                      >
-                        No materials yet
-                      </li>
-                    )}
+                      ))}
+
+                    {chapter.videos && chapter.videos.length > 0 &&
+                      chapter.videos.map((video) => (
+                        <li key={video.id} className="flex items-center gap-2">
+                          <p>🎬 {video.video_name}</p>
+                        </li>
+                      ))}
 
                     {login && chapter.quizzes.length > 0 && (
                       <li className="pt-2 text-orange-400 text-xs">
                         Quizzes available: {chapter.quizzes.length}
                       </li>
                     )}
+
+                    {!chapter.materials?.length &&
+                      !chapter.videos?.length &&
+                      !chapter.quizzes?.length && (
+                        <li
+                          className={`italic ${
+                            isDarkMode ? "text-gray-500" : "text-gray-400"
+                          }`}
+                        >
+                          No materials yet
+                        </li>
+                      )}
                   </ul>
                 </div>
               </div>
